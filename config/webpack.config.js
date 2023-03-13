@@ -61,12 +61,12 @@ module.exports = (env, argv) => {
             '**/pdf_viewer.html',
         ]
     };
-    if (browser === "chrome") {
-        pagesCopyOptions.ignore = [];
-        entry['pages/neovim'] = './src/pages/neovim.js';
-        entry['pages/pdf_viewer'] = './src/content_scripts/pdf_viewer.js';
-        moduleEntries['pages/neovim_lib'] = './src/nvim/renderer.ts';
-    }
+    // if (browser === "chrome") {
+    //     pagesCopyOptions.ignore = [];
+    //     entry['pages/neovim'] = './src/pages/neovim.js';
+    //     entry['pages/pdf_viewer'] = './src/content_scripts/pdf_viewer.js';
+    //     moduleEntries['pages/neovim_lib'] = './src/nvim/renderer.ts';
+    // }
     if (browser !== "safari") {
         entry['pages/markdown'] = './src/content_scripts/markdown.js';
     } else {

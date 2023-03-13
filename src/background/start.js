@@ -1239,7 +1239,7 @@ function start(browser) {
     };
     self.createSession = function(message, sender, sendResponse) {
         loadSettings('sessions', function(data) {
-            chrome.tabs.query({}, function(tabs) {
+            chrome.tabs.query({pinned : false, currentWindow : true}, function(tabs) {
                 var tabGroup = {};
                 tabs.forEach(function(tab) {
                     if (tab && tab.index !== void 0) {

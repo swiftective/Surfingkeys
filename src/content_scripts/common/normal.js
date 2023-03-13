@@ -78,7 +78,7 @@ function createPassThrough() {
 }
 
 function createNormal(insert) {
-    var self = new Mode("Normal");
+    var self = new Mode("");
 
     self.mappings = new Trie();
     self.map_node = self.mappings;
