@@ -165,7 +165,7 @@ function isEditable(element) {
         && !element.disabled && (element.localName === 'textarea'
         || element.localName === 'select'
         || element.isContentEditable
-        || element.matches(runtime.conf.editableSelector)
+        || (element.matches && element.matches(runtime.conf.editableSelector))
         || (element.localName === 'input' && /^(?!button|checkbox|file|hidden|image|radio|reset|submit)/i.test(element.type)));
 }
 
@@ -827,6 +827,10 @@ function filterByTitleOrUrl(urls, query) {
     return urls;
 }
 
+function getCssSelectorsOfEditable() {
+    return "input:not([type=submit]), textarea, *[contenteditable=true], *[role=textbox], select, div.ace_cursor";
+}
+
 export {
     LOG,
     actionWithSelectionPreserved,
@@ -843,6 +847,7 @@ export {
     getAnnotations,
     getBrowserName,
     getClickableElements,
+    getCssSelectorsOfEditable,
     getDocumentOrigin,
     getElements,
     getRealEdit,
