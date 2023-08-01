@@ -136,7 +136,7 @@ function createAPI(clipboard, insert, normal, hints, visual, front, browser) {
      */
     function map(new_keystroke, old_keystroke, domain, new_annotation) {
         if (_isDomainApplicable(domain)) {
-            if (old_keystroke[0] === ':') {
+            if (old_keystroke[0] === ':' && old_keystroke.length > 1) {
                 var cmdline = old_keystroke.substr(1);
                 var keybound = createKeyTarget(function () {
                     front.executeCommand(cmdline);
@@ -281,6 +281,22 @@ function createAPI(clipboard, insert, normal, hints, visual, front, browser) {
     function vunmap(keystroke, domain) {
         if (_isDomainApplicable(domain)) {
             visual.mappings.remove(KeyboardUtils.encodeKeystroke(keystroke));
+        }
+    }
+
+    /**
+     * Map a key sequence to another in lurk mode.
+     *
+     * @param {string} new_keystroke a key sequence to replace
+     * @param {string} old_keystroke a key sequence to be replaced
+     * @param {regex} [domain=null] a Javascript regex pattern to identify the domains that this mapping works.
+     * @param {string} [new_annotation=null] use it instead of the annotation from old_keystroke if provided.
+     *
+     * @see map
+     */
+    function lmap(new_keystroke, old_keystroke, domain, new_annotation) {
+        if (_isDomainApplicable(domain)) {
+            normal.addLurkMap(new_keystroke, old_keystroke);
         }
     }
 
@@ -767,6 +783,7 @@ function createAPI(clipboard, insert, normal, hints, visual, front, browser) {
         getBrowserName,
         getClickableElements,
         getFormData,
+        lmap,
         map,
         unmap,
         unmapAllExcept,

@@ -200,6 +200,23 @@ To press `Alt-i` to enter PassThrough mode gives you a chance to temporarily sup
 
 To press `p` to enter ephemeral PassThrough mode, which will automatically quit after 1 second.
 
+### Lurk mode
+
+User can specify the pages where Surfingkeys will lurk until it is called out by `Alt-i` or `p`(for ephemeral case), such as
+
+    settings.lurkingPattern = /https:\/\/github\.com|.*confluence.*/i;
+
+If the loading page matches with the `lurkingPattern`, Surfingkeys will enter `lurk` mode by default, in which mode only `Alt-i` and `p` are registered by Surfingkeys to activate `normal` mode. When user presses `Esc` or timeout, Surfingkeys reverts back to `lurk` mode.
+
+API `lmap` can be used to change the shortcuts, for example,
+
+    api.lmap("<Alt-j>", "<Alt-i>");
+
+The extension icon in toolbar reflects current status of Surfingkeys,
+
+* Grey -- disabled.
+* Half Grey/Half Color -- lurking.
+* Color -- enabled.
 ## Omnibar
 
 The omnibar provides kinds of functions that need user input, for example,
@@ -267,7 +284,7 @@ By default, pressing `T` will show all opened tabs in an overlay, then pressing 
 
 ![tabs_overlay](https://cloud.githubusercontent.com/assets/288207/10544636/245447f6-7457-11e5-8372-62b8f6337158.png)
 
-There is `settings.tabsThreshold` here. When total of opened tabs exceeds `settings.tabsThreshold`(default as 9), omnibar will be used for choosing tabs.
+There is `settings.tabsThreshold` here. When total of opened tabs exceeds `settings.tabsThreshold`, omnibar will be used for choosing tabs.
 
 ![tabs_omnibar](https://cloud.githubusercontent.com/assets/288207/10544630/1fbdd02c-7457-11e5-823c-14411311c315.png)
 
@@ -524,7 +541,7 @@ Some functionalities are also available when you're using original pdf viewer, b
 | settings.omnibarSuggestion | false | Show suggestion URLs|
 | settings.omnibarSuggestionTimeout | 200 | Timeout duration before Omnibar suggestion URLs are queried, in milliseconds. Helps prevent unnecessary HTTP requests and API rate-limiting. |
 | settings.focusFirstCandidate | false | Whether to focus first candidate of matched result in Omnibar. |
-| settings.tabsThreshold | 9 | When total of opened tabs exceeds the number, Omnibar will be used for choosing tabs. |
+| settings.tabsThreshold | 100 | When total of opened tabs exceeds the number, Omnibar will be used for choosing tabs. |
 | settings.clickableSelector | "" | Extra CSS selector to pick elements for hints mode, such as "\*.jfk-button, \*.goog-flat-menu-button". |
 | settings.clickablePat | /(https?&#124;thunder&#124;magnet):\/\/\S+/ig | A regex to detect clickable links from text, you could use `O` to open them. |
 | settings.editableSelector | div.CodeMirror-scroll,div.ace_content | CSS selector for additional editable elements. |

@@ -60,7 +60,7 @@ module.exports = function(api) {
         Hints.create("", (element, event) => {
             if (chrome.surfingkeys) {
                 const r = element.getClientRects()[0];
-                chrome.surfingkeys.sendMouseEvent(2, Math.round(r.x + r.width / 2), Math.round(r.y + r.height / 2));
+                chrome.surfingkeys.sendMouseEvent(2, Math.round(r.x + r.width / 2), Math.round(r.y + r.height / 2), 0);
             } else {
                 Hints.dispatchMouseClick(element, event);
             }
@@ -238,7 +238,7 @@ module.exports = function(api) {
     });
     mapkey('yY', "#7Copy all tabs's url", function() {
         RUNTIME('getTabs', null, function (response) {
-            Clipboard.write([window.location.href].concat(response.tabs.map(tab => tab.url)).join('\n'));
+            Clipboard.write(response.tabs.map(tab => tab.url).join('\n'));
         });
     });
     mapkey('yh', "#7Copy current page's host", function() {
@@ -472,7 +472,7 @@ module.exports = function(api) {
         mapkey(';v', '#11Open neovim', function() {
             tabOpenLink("/pages/neovim.html");
         });
-        mapkey('<Ctrl-Alt-i>', '#1Go to edit box with neo vim editor', function() {
+        mapkey('<Ctrl-Alt-i>', '#1Go to edit box with neovim editor', function() {
             Hints.create("input, textarea, *[contenteditable=true], select", function(element) {
                 Front.showEditor(element, null, null, true);
             });

@@ -510,20 +510,28 @@ function start(browser) {
         // use the tab's url if sender is a frame with blank url.
         return (sender.frameId !== 0 && sender.url === "about:blank") ? sender.tab.url : sender.url;
     }
-    function _getDisabled(set, url, regex) {
+    function _getState(set, url, blocklistPattern, lurkingPattern) {
         if (set.blocklist['.*']) {
-            return true;
+            return "disabled";
         }
         if (url) {
             if (set.blocklist[url.origin]) {
-                return true;
+                return "disabled";
             }
-            if (regex) {
-                regex = new RegExp(regex.source, regex.flags);
-                return regex.test(url.href);
+            if (blocklistPattern) {
+                blocklistPattern = new RegExp(blocklistPattern.source, blocklistPattern.flags);
+                if (blocklistPattern.test(url.href)) {
+                    return "disabled";
+                }
+            }
+            if (lurkingPattern) {
+                lurkingPattern = new RegExp(lurkingPattern.source, lurkingPattern.flags);
+                if (lurkingPattern.test(url.href)) {
+                    return "lurking";
+                }
             }
         }
-        return false;
+        return "enabled";
     }
     self.toggleBlocklist = function(message, sender, sendResponse) {
         loadSettings('blocklist', function(data) {
@@ -539,7 +547,7 @@ function start(browser) {
             }
             _updateAndPostSettings({blocklist: data.blocklist}, function() {
                 sendResponse({
-                    disabled: _getDisabled(data, sender.tab ? new URL(getSenderUrl(sender)) : null, message.blocklistPattern),
+                    state: _getState(data, sender.tab ? new URL(getSenderUrl(sender)) : null, message.blocklistPattern, message.lurkingPattern),
                     blocklist: data.blocklist,
                     url: origin
                 });
@@ -560,12 +568,12 @@ function start(browser) {
             }
         });
     };
-    self.getDisabled = function(message, sender, sendResponse) {
+    self.getState = function(message, sender, sendResponse) {
         loadSettings(['blocklist', 'noPdfViewer'], function(data) {
             if (sender.tab) {
                 _response(message, sendResponse, {
                     noPdfViewer: data.noPdfViewer,
-                    disabled: _getDisabled(data, new URL(getSenderUrl(sender)), message.blocklistPattern)
+                    state: _getState(data, new URL(getSenderUrl(sender)), message.blocklistPattern, message.lurkingPattern)
                 });
             }
         });
@@ -716,10 +724,11 @@ function start(browser) {
                     return b.title.indexOf(message.query) !== -1 || (b.url && b.url.indexOf(message.query) !== -1);
                 });
             }
-            tabs = tabs.filter(function(b) {
-                return b.id !== tab.id;
-            });
-            if (conf.tabsMRUOrder) {
+            if (tabs.length > message.tabsThreshold && conf.tabsMRUOrder) {
+                // only remove current tab when tabsMRUOrder is enabled.
+                tabs = tabs.filter(function(b) {
+                    return b.id !== tab.id;
+                });
                 tabs.sort(function(x, y) {
                     // Shift tabs without "last access" data to the end
                     var a = tabActivated[x.id];
@@ -1159,8 +1168,14 @@ function start(browser) {
         }
     };
     self.setSurfingkeysIcon = function(message, sender, sendResponse) {
+        let icon = "icons/48.png";
+        if (message.status === "disabled") {
+            icon = "icons/48-x.png";
+        } else if (message.status === "lurking") {
+            icon = "icons/48-l.png";
+        }
         chrome.browserAction.setIcon({
-            path: (message.status ? 'icons/48-x.png' : 'icons/48.png'),
+            path: icon,
             tabId: (sender.tab ? sender.tab.id : undefined)
         });
     };

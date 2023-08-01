@@ -186,6 +186,23 @@ Surfingkeys有三种模式：normal，visual和insert。
     api.mapkey('p', '#0enter ephemeral PassThrough mode to temporarily suppress SurfingKeys', function() {
         api.Normal.passThrough(1500);
     });
+### Lurk mode
+
+用户可以指定在哪些页面Surfingkeys默认进入Lurk模式，直到通过`Alt-i`或者`p`（短暂的）唤醒，
+
+    settings.lurkingPattern = /https:\/\/github\.com|.*confluence.*/i;
+
+如果当前页面匹配`lurkingPattern`，Surfingkeys自动潜伏，此时用户必须通过`Alt-i`或者`p`唤醒才能进入正常模式，如果用户在正常模式下按`Esc`或者超时，Surfingkeys会退回潜伏模式。
+
+可使用`lmap`修改默认按键，如，
+
+    api.lmap("<Alt-j>", "<Alt-i>");
+
+任务栏里的Surfingkeys图标会反应当前状态：
+
+* 灰色 -- 禁用
+* 半灰半彩 -- 潜伏
+* 彩色 -- 启用
 
 ## 搜索栏
 
@@ -512,7 +529,7 @@ Surfingkeys默认使用[这个markdown分析器](https://github.com/chjj/marked)
 | settings.omnibarPosition | "middle" | 定义搜索框位置。 ["middle", "bottom"] |
 | settings.omnibarSuggestionTimeout | 200 | 设置触发搜索引擎提示的超时，当按键过去设定毫秒后才发起搜索引擎提示的请求，这样避免每次按键就触发请求。|
 | settings.focusFirstCandidate | false | 是否在搜索栏下面自动选择第一个匹配的结果。 |
-| settings.tabsThreshold | 9 | 当打开标签页的数量超过设定值时，使用搜索栏来查找标签页。 |
+| settings.tabsThreshold | 100 | 当打开标签页的数量超过设定值时，使用搜索栏来查找标签页。 |
 | settings.clickableSelector | "" | 自定义CSS selector用于f键选择无法检测到的可点击元素，例如"\*.jfk-button, \*.goog-flat-menu-button"。 |
 | settings.clickablePat | /(https?&#124;thunder&#124;magnet):\/\/\S+/ig | 用于检测文字中可点击链接的正则表达式，你可以按`O`打开检测到的链接。|
 | settings.editableSelector | div.CodeMirror-scroll,div.ace_content | 额外CSS selector以自定义可编辑元素。|

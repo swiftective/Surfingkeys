@@ -42,6 +42,7 @@ var runtime = (function() {
             lastKeys: "",
             // local part from settings
             blocklistPattern: undefined,
+            lurkingPattern: undefined,
             smartCase: true,
             caseSensitive: false,
             clickablePat: /(https?:\/\/|thunder:\/\/|magnet:)\S+/ig,
@@ -81,7 +82,7 @@ var runtime = (function() {
             smoothScroll: true,
             startToShowEmoji: 2,
             stealFocusOnLoad: true,
-            tabsThreshold: 9,
+            tabsThreshold: 100,
             textAnchorPat: /(^[\n\r\s]*\S{3,}|\b\S{4,})/g,
             ignoredFrameHosts: ["https://tpc.googlesyndication.com"],
             scrollFriction: 0,
