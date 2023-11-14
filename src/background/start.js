@@ -61,6 +61,7 @@ function _save(storage, data, cb) {
         // don't store snippets from localPath into sync storage, since sync storage has its quota.
         if (data.localPath) {
             delete data.snippets;
+            delete data.localPath;
         }
         storage.set(data, cb);
     } else {
@@ -718,12 +719,7 @@ function start(browser) {
         var tab = sender.tab;
         var queryInfo = message.queryInfo || {};
         chrome.tabs.query(queryInfo, function(tabs) {
-            tabs = _filterByTitleOrUrl(tabs, message.query);
-            if (message.query && message.query.length) {
-                tabs = tabs.filter(function(b) {
-                    return b.title.indexOf(message.query) !== -1 || (b.url && b.url.indexOf(message.query) !== -1);
-                });
-            }
+            tabs = _filterByTitleOrUrl(tabs, message.filter);
             if (tabs.length > message.tabsThreshold && conf.tabsMRUOrder) {
                 // only remove current tab when tabsMRUOrder is enabled.
                 tabs = tabs.filter(function(b) {

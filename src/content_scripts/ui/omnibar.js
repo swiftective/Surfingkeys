@@ -3,6 +3,7 @@ import KeyboardUtils from '../common/keyboardUtils';
 import Mode from '../common/mode';
 import { debounce } from 'lodash';
 import {
+    attachFaviconToImgSrc,
     constructSearchURL,
     createElementWithContent,
     filterByTitleOrUrl,
@@ -40,6 +41,7 @@ function createOmnibar(front, clipboard) {
     self.mappings = new Trie();
     self.map_node = self.mappings;
 
+    var savedFocused = -1;
     self.mappings.add(KeyboardUtils.encodeKeystroke("<Ctrl-d>"), {
         annotation: "Delete focused item from bookmark or history",
         feature_group: 8,
@@ -50,7 +52,15 @@ function createOmnibar(front, clipboard) {
                     uid: fi.uid
                 }, function(ret) {
                     if (ret.response === "Done") {
+                        var newFI = (runtime.conf.omnibarPosition !== "bottom") ? fi.nextElementSibling : fi.previousElementSibling;
                         fi.remove();
+                        if (newFI) {
+                            self.focusItem(newFI);
+                        } else {
+                            savedFocused = (runtime.conf.omnibarPosition !== "bottom") ?
+                                self.resultsDiv.querySelectorAll('#sk_omnibarSearchResult>ul>li').length : 0;
+                            self.input.dispatchEvent(new Event('input', { bubbles: true }));
+                        }
                     }
                 });
             }
@@ -379,7 +389,7 @@ function createOmnibar(front, clipboard) {
     };
 
     self.createURLItem = function(b, rxp) {
-        b.title = (b.title && b.title !== "") ? b.title : b.url;
+        b.title = (b.title && b.title !== "") ? b.title : decodeURI(b.url);
         var type = "🔥", additional = "", uid = b.uid;
         if (b.hasOwnProperty('lastVisitTime')) {
             type = "🕜";
@@ -397,8 +407,14 @@ function createOmnibar(front, clipboard) {
         } else if(b.type && b.type.length === 2 && b.type.charCodeAt(0) > 255) {
             type = b.type;
         }
-        var li = createElementWithContent('li',
-            `<div class="title">${type} ${self.highlight(rxp, htmlEncode(b.title))} ${additional}</div><div class="url">${self.highlight(rxp, b.url)}</div>`);
+        if (b.hasOwnProperty('favIconUrl')) {
+          var li = createElementWithContent('li',
+            `<img/><div class="text-container"><div class="title">${self.highlight(rxp, htmlEncode(b.title))} ${additional}</div><div class="url">${self.highlight(rxp, htmlEncode(decodeURIComponent(b.url)))}</div></div>`, { "class": "tab" });
+          attachFaviconToImgSrc(b, li.querySelector('img'));
+        } else {
+          var li = createElementWithContent('li',
+            `<div class="title">${type} ${self.highlight(rxp, htmlEncode(b.title))} ${additional}</div><div class="url">${self.highlight(rxp, htmlEncode(decodeURIComponent(b.url)))}</div>`);
+        }
         li.uid = uid;
         li.url = b.url;
         return li;
@@ -447,6 +463,12 @@ function createOmnibar(front, clipboard) {
         _items = items;
         _showFolder = showFolder;
         _listResultPage();
+        if (savedFocused !== -1) {
+            const items = self.resultsDiv.querySelectorAll('#sk_omnibarSearchResult>ul>li');
+            self.focusItem(items[savedFocused]);
+            savedFocused = -1;
+        }
+
     };
     self.getItems = function() {
         return _items;
@@ -849,8 +871,10 @@ function OpenBookmarks(omnibar) {
         }
         omnibar.listURLs(items, true);
 
-        var items = omnibar.resultsDiv.querySelectorAll('#sk_omnibarSearchResult>ul>li');
-        omnibar.focusItem(items[lastFocused]);
+        if (!omnibar.resultsDiv.querySelector('li.focused')) {
+            var items = omnibar.resultsDiv.querySelectorAll('#sk_omnibarSearchResult>ul>li');
+            omnibar.focusItem(items[lastFocused]);
+        }
     };
 
     return self;
@@ -1003,11 +1027,11 @@ function OpenTabs(omnibar) {
         focusFirstCandidate: true,
     };
 
-    var queryInfo = {};
+    var getTabsArgs = {};
     self.getResults = function () {
         omnibar.cachedPromise = new Promise(function(resolve, reject) {
-            queryInfo.tabsThreshold = Math.min(runtime.conf.tabsThreshold, Math.ceil(window.innerWidth / 26));
-            RUNTIME('getTabs', queryInfo, function(response) {
+            getTabsArgs.tabsThreshold = Math.min(runtime.conf.tabsThreshold, Math.ceil(window.innerWidth / 26));
+            RUNTIME('getTabs', getTabsArgs, function(response) {
                 resolve(response.tabs);
             });
         });
@@ -1021,11 +1045,14 @@ function OpenTabs(omnibar) {
                 });
                 return true;
             };
-            queryInfo = {queryInfo: {currentWindow: false}};
+            getTabsArgs = {queryInfo: {currentWindow: false}};
         } else {
             self.prompt = `tabs${separatorHtml}`;
             self.onEnter = omnibar.openFocused.bind(self);
-            queryInfo = {};
+            getTabsArgs = {};
+            if (args && typeof(args.filter) === 'string') {
+                getTabsArgs.filter = args.filter;
+            }
         }
         self.getResults();
         self.onInput();
@@ -1466,15 +1493,7 @@ function OpenUserURLs(omnibar) {
         var query = omnibar.input.value;
         var urls = [];
 
-        for (var m of _items) {
-            if (query === "" || m.title.indexOf(query) !== -1 || m.url.indexOf(query) !== -1) {
-                urls.push({
-                    title: m.title,
-                    type: '🍆',
-                    url: m.url
-                });
-            }
-        }
+        urls = filterByTitleOrUrl(_items, query);
         omnibar.listURLs(urls, false);
     };
     return self;

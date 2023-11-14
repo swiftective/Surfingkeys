@@ -789,30 +789,15 @@ function flashPressedLink(link, cb) {
 
 function regexFromString(str, highlight) {
     var rxp = null;
-    if (/^\/.+\/([gimuy]*)$/.test(str)) {
-        // full regex input
-        try {
-            rxp = eval(str);
-        } catch (e) {
-            rxp = null;
-        }
-    }
-    if (!rxp) {
-        if (/^\/.+$/.test(str)) {
-            // part regex input
-            rxp = eval(str + "/i");
-        }
-        if (!rxp) {
-            str = str.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
-            if (highlight) {
-                rxp = new RegExp(str.replace(/\s+/, "\|"), 'gi');
-            } else {
-                var words = str.split(/\s+/).map(function(w) {
-                    return `(?=.*${w})`;
-                }).join('');
-                rxp = new RegExp(`^${words}.*$`, "gi");
-            }
-        }
+    const flags = runtime.getCaseSensitive(str) ? "g" : "gi";
+    str = str.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
+    if (highlight) {
+        rxp = new RegExp(str.replace(/\s+/, "\|"), flags);
+    } else {
+        var words = str.split(/\s+/).map(function(w) {
+            return `(?=.*${w})`;
+        }).join('');
+        rxp = new RegExp(`^${words}.*$`, flags);
     }
     return rxp;
 }
@@ -821,7 +806,7 @@ function filterByTitleOrUrl(urls, query) {
     if (query && query.length) {
         var rxp = regexFromString(query, false);
         urls = urls.filter(function(b) {
-            return rxp.test(b.title) || rxp.test(b.url);
+            return rxp.test(b.title) || rxp.test(decodeURI(b.url));
         });
     }
     return urls;
@@ -831,9 +816,51 @@ function getCssSelectorsOfEditable() {
     return "input:not([type=submit]), textarea, *[contenteditable=true], *[role=textbox], select, div.ace_cursor";
 }
 
+function refreshHints(hints, pressedKeys) {
+    const result = {candidates: 0};
+    if (pressedKeys.length > 0) {
+        for (const hint of hints) {
+            const label = hint.label;
+            if (pressedKeys === label) {
+                result.matched = hint.link;
+                break;
+            } else if (label.indexOf(pressedKeys) === 0) {
+                hint.style.opacity = 1;
+                setSanitizedContent(hint, `<span style="opacity: 0.2;">${pressedKeys}</span>` + label.substr(pressedKeys.length));
+                result.candidates ++;
+            } else {
+                hint.style.opacity = 0;
+            }
+        }
+    } else {
+        if (hints.length === 1) {
+            result.matched = hints[0].link;
+        } else {
+            for (const hint of hints) {
+                hint.style.opacity = 1;
+                setSanitizedContent(hint, hint.label);
+            }
+            result.candidates = hints.length;
+        }
+    }
+    return result;
+}
+
+function attachFaviconToImgSrc(tab, imgEl) {
+    const browserName = getBrowserName();
+    if (browserName === "Chrome") {
+        imgEl.src = `chrome://favicon/${tab.url}`;
+    } else if (browserName.startsWith("Safari")) {
+        imgEl.src = new URL(tab.url).origin + "/favicon.ico";
+    } else {
+        imgEl.src = tab.favIconUrl;
+    }
+}
+
 export {
     LOG,
     actionWithSelectionPreserved,
+    attachFaviconToImgSrc,
     constructSearchURL,
     createElementWithContent,
     dispatchMouseEvent,
@@ -868,6 +895,7 @@ export {
     listElements,
     mapInMode,
     parseAnnotation,
+    refreshHints,
     regexFromString,
     reportIssue,
     scrollIntoViewIfNeeded,
