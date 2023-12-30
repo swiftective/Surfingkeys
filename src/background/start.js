@@ -467,13 +467,13 @@ function start(browser) {
     function _updateSettings(diffSettings, afterSet) {
         diffSettings.savedAt = new Date().getTime();
         _save(chrome.storage.local, diffSettings, function() {
+            _save(chrome.storage.sync, diffSettings, function() {
+                if (chrome.runtime.lastError) {
+                    var error = chrome.runtime.lastError.message;
+                }
+            });
             if (afterSet) {
                 afterSet();
-            }
-        });
-        _save(chrome.storage.sync, diffSettings, function() {
-            if (chrome.runtime.lastError) {
-                var error = chrome.runtime.lastError.message;
             }
         });
     }
@@ -1197,7 +1197,14 @@ function start(browser) {
                 text: canvas.toDataURL()
             });
         };
-
+        img.onerror = (e) => {
+            // retry without crossOrigin
+            if (img.crossOrigin) {
+                delete img.src;
+                img.crossOrigin = null;
+                img.src = message.url;
+            }
+        };
     };
     self.nextFrame = function(message, sender, sendResponse) {
         var tid = sender.tab.id;
