@@ -1287,11 +1287,14 @@ function start(browser) {
         loadSettings('sessions', function(data) {
             if (data.sessions.hasOwnProperty(message.name)) {
                 var urls = data.sessions[message.name]['tabs'];
-                urls[0].forEach(function(url) {
-                    chrome.tabs.create({
-                        url: url,
-                        active: false,
-                        pinned: false
+                chrome.windows.create({}, function(win) {
+                    urls[0].forEach(function(url) {
+                        chrome.tabs.create({
+                            windowId: win.id,
+                            url: url,
+                            active: false,
+                            pinned: false
+                        });
                     });
                 });
                 for (var i = 1; i < urls.length; i++) {
