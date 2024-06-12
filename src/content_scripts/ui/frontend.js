@@ -35,6 +35,7 @@ const Front = (function() {
 
     const self = new Mode("Front");
     self._actions = {};
+    self.topSize = [0, 0];
     const omnibar = createOmnibar(self, clipboard);
 
     createCommands(normal, omnibar.command, omnibar);
@@ -255,10 +256,14 @@ const Front = (function() {
         var hintLabels = hints.genLabels(tabs.length - 1);
         var j = 0;
         const unitWidth = window.innerWidth / tabs.length - 2;
+        const verticalTabs = runtime.conf.verticalTabs;
+        _tabs.className = verticalTabs ? "vertical" : "horizontal";
         tabs.forEach(function(t, i) {
             var tab = document.createElement('div');
             tab.setAttribute('class', 'sk_tab');
-            tab.style.width = unitWidth + 'px';
+            if (!verticalTabs) {
+                tab.style.width = unitWidth + 'px';
+            }
             if (t.active === false) {
                 setSanitizedContent(tab, `<div class=sk_tab_hint>${hintLabels[j]}</div><div class=sk_tab_wrap><div class=sk_tab_icon><img/></div><div class=sk_tab_title>${htmlEncode(t.title)}</div></div>`);
                 const tabHint = tab.querySelector("div.sk_tab_hint");
@@ -270,9 +275,16 @@ const Front = (function() {
                 tab.style.boxShadow = "0px 3px 7px 0px rgba(245, 245, 0, 0.9)";
             }
             attachFaviconToImgSrc(t, tab.querySelector("img"));
-            tab.querySelector("div.sk_tab_title").style.width = (unitWidth - 24) + 'px';
+            if (verticalTabs) {
+                tab.append(createElementWithContent('div', '🚀', {class: "tab_rocket"}));
+            } else {
+                tab.querySelector("div.sk_tab_title").style.width = (unitWidth - 24) + 'px';
+            }
             _tabs.append(tab);
         });
+        if (_tabs.getBoundingClientRect().height > self.topSize[1]) {
+            _tabs.className = "inline";
+        }
     };
     _actions['chooseTab'] = function() {
         const tabsThreshold = Math.min(runtime.conf.tabsThreshold, Math.ceil(window.innerWidth / 26));
@@ -625,6 +637,7 @@ const Front = (function() {
 
     _actions['initFrontend'] = function(message) {
         self.topOrigin = message.origin;
+        self.topSize = message.winSize;
         return new Date().getTime();
     };
 

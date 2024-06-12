@@ -776,7 +776,7 @@ function start(browser) {
         }
     };
     self.focusTabByIndex = function(message, sender, sendResponse) {
-        var queryInfo = message.queryInfo || {};
+        var queryInfo = message.queryInfo || {currentWindow: true};
         chrome.tabs.query(queryInfo, function(tabs) {
             if (message.repeats > 0 && message.repeats <= tabs.length) {
                 chrome.tabs.update(tabs[message.repeats - 1].id, {
@@ -1145,6 +1145,9 @@ function start(browser) {
             message.key = "";
         }
         pf(message.key, function(data) {
+            if (message.key === undefined) {
+                data.useNeovim = !!browser.nvimServer.instance;
+            }
             _response(message, sendResponse, {
                 settings: data
             });
@@ -1598,6 +1601,9 @@ function start(browser) {
             queueURLs: _queueURLs
         };
     };
+    self.clearQueueURLs = function(message, sender, sendResponse) {
+        _queueURLs = [];
+    };
 
     self.getVoices = function(message, sender, sendResponse) {
         chrome.tts.getVoices(function(voices) {
@@ -1672,7 +1678,7 @@ function start(browser) {
     chrome.runtime.setUninstallURL("http://brookhong.github.io/2018/01/30/why-did-you-uninstall-surfingkeys.html");
 
     self.connectNative = function (message, sender, sendResponse) {
-        if (browser.nvimServer) {
+        if (browser.nvimServer && browser.nvimServer.instance) {
             browser.nvimServer.instance.then(({url, nm}) => {
                 nm.postMessage({
                     mode: message.mode

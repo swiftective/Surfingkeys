@@ -205,6 +205,9 @@ module.exports = function(api) {
             });
         }
     });
+    mapkey(';cq', '#7Clear all URLs in queue to be opened', function() {
+        RUNTIME('clearQueueURLs');
+    });
     mapkey('ys', "#7Copy current page's source", function() {
         var aa = document.documentElement.cloneNode(true);
         Clipboard.write(aa.outerHTML);
@@ -471,11 +474,6 @@ module.exports = function(api) {
         });
         mapkey(';v', '#11Open neovim', function() {
             tabOpenLink("/pages/neovim.html");
-        });
-        mapkey('<Ctrl-Alt-i>', '#1Go to edit box with neovim editor', function() {
-            Hints.create("input, textarea, *[contenteditable=true], select", function(element) {
-                Front.showEditor(element, null, null, true);
-            });
         });
     }
 
