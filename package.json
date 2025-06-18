@@ -44,7 +44,6 @@
     "jest": "^27.3.1",
     "jest-image-snapshot": "^4.5.1",
     "npm-run-all": "^4.1.5",
-    "puppeteer": "^10.2.0",
     "strict-event-emitter-types": "^2.0.0",
     "string-replace-loader": "^3.0.3",
     "style-loader": "^3.2.1",
@@ -60,6 +59,7 @@
     "@pixi/constants": "^6.2.1",
     "@pixi/core": "^6.2.1",
     "@pixi/display": "^6.2.1",
+    "@pixi/extensions": "^6.2.1",
     "@pixi/graphics": "^6.2.1",
     "@pixi/math": "^6.2.1",
     "@pixi/runner": "^6.2.1",
@@ -68,13 +68,11 @@
     "@pixi/ticker": "^6.2.1",
     "@pixi/unsafe-eval": "^6.2.1",
     "@pixi/utils": "^6.2.1",
-    "@pixi/extensions": "^6.2.1",
     "ace-builds": "^1.4.12",
     "dompurify": "^2.3.1",
     "js-base64": "^3.7.2",
     "lodash": "^4.17.21",
-    "marked": "^4.0.10",
-    "pdfjs-dist": "^2.9.359"
+    "marked": "^4.0.10"
   },
   "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977"
 }
