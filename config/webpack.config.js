@@ -23,7 +23,6 @@ function modifyManifest(browser, mode, buffer) {
         manifest.options_page = "pages/options.html";
         manifest.background.persistent = false;
     } else {
-        manifest.permissions.push("proxy");
         manifest.permissions.push("tts");
         manifest.permissions.push("downloads.shelf");
         manifest.background.persistent = false;
