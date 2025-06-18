@@ -664,6 +664,8 @@ function createOmnibar(front, clipboard) {
         });
     };
 
+    self.addHandler("Sessions", OpenSessions(self))
+
     self.addHandler('Bookmarks', OpenBookmarks(self));
     self.addHandler('AddBookmark', AddBookmark(self));
     self.addHandler('History', OpenURLs(`history${separatorHtml}`, self, () => {
@@ -1137,6 +1139,60 @@ function OpenWindows(omnibar, front) {
         });
     };
     return self;
+}
+
+function OpenSessions(omnibar) {
+
+  var self = {
+    focusFirstCandidate: true,
+    prompt: 'Sessions:',
+  };
+
+  self.getResults = function () {
+    omnibar.cachedPromise = new Promise(function(resolve, reject) {
+      RUNTIME('getSettings', {
+        key: 'sessions'
+      }, function(response) {
+          var items = response.settings.sessions
+
+          resolve(items)
+        });
+    });
+  };
+
+
+  self.onOpen = function() {
+    self.getResults()
+    self.onInput()
+  };
+
+  self.onReset = self.onOpen;
+
+  self.onInput = function() {
+    omnibar.cachedPromise.then(function(cached) {
+      var filtered = Object.keys(cached).filter(s => {
+        return s.includes(omnibar.input.value)
+      })
+      omnibar.listResults(filtered, function(s) {
+        return createElementWithContent('li', s);
+      });
+    });
+  }
+
+  self.onEnter = function() {
+    var selected = omnibar.resultsDiv.querySelector('li.focused').innerText
+
+    if (!selected) return
+
+    RUNTIME('openSession', {
+      name: selected
+    });
+
+    return true
+  }
+
+  return self
+
 }
 
 function OpenVIMarks(omnibar) {
