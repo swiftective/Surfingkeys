@@ -1170,9 +1170,19 @@ function OpenSessions(omnibar) {
 
   self.onInput = function() {
     omnibar.cachedPromise.then(function(cached) {
-      var filtered = Object.keys(cached).filter(s => {
-        return s.includes(omnibar.input.value)
+
+      let query = omnibar.input.value.trim().replace(/\s{2,}/g, ' ')
+
+      if (!query || query === '') {
+        return
+      }
+
+      let queryList = query.split(" ")
+
+      var filtered = Object.keys(cached).filter(sess_name => {
+        return queryList.every(word => sess_name.includes(word))
       })
+
       omnibar.listResults(filtered, function(s) {
         return createElementWithContent('li', s);
       });
