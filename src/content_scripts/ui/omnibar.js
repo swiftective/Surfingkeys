@@ -46,6 +46,13 @@ function createOmnibar(front, clipboard) {
         annotation: "Delete focused item from bookmark or history",
         feature_group: 8,
         code: function () {
+
+            if (handler && handler.onCtrlD) {
+              handler.onCtrlD()
+
+              return
+            }
+
             var fi = self.resultsDiv.querySelector('li.focused');
             if (fi && fi.uid) {
                 RUNTIME("removeURL", {
@@ -1190,15 +1197,44 @@ function OpenSessions(omnibar) {
   }
 
   self.onEnter = function() {
+    var selectedEl = omnibar.resultsDiv.querySelector('li.focused')
+    if (!selectedEl) return
+
     var selected = omnibar.resultsDiv.querySelector('li.focused').innerText
 
     if (!selected) return
 
-    RUNTIME('openSession', {
+    if (!this.activeTab) {
+      RUNTIME('createSession', {
+        name: selected,
+      });
+
+      showBanner(`Saved session ${selected}`)
+
+    } else {
+      RUNTIME('openSession', {
+        name: selected
+      });
+    }
+
+    return true
+  }
+
+  self.onCtrlD = function() {
+    var selectedEl = omnibar.resultsDiv.querySelector('li.focused')
+    if (!selectedEl) return
+
+    var selected = omnibar.resultsDiv.querySelector('li.focused').innerText
+    if (!selected) return
+
+    RUNTIME('deleteSession', {
       name: selected
     });
 
-    return true
+    setTimeout(() => {
+      self.onReset()
+    }, 50);
+
   }
 
   return self
