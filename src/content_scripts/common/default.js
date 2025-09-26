@@ -397,39 +397,6 @@ module.exports = function(api) {
             tabOpenLink("about:blank");
         });
     } else if (browser === "Chrome") {
-        mapkey('cp', '#13Toggle proxy for current site', function() {
-            var host = window.location.host.replace(/:\d+/,'');
-            if (host && host.length) {
-                RUNTIME('updateProxy', {
-                    host: host,
-                    operation: "toggle"
-                });
-            }
-        });
-        mapkey(';cp', '#13Copy proxy info', function() {
-            RUNTIME('getSettings', {
-                key: ['proxyMode', 'proxy', 'autoproxy_hosts']
-            }, function(response) {
-                Clipboard.write(JSON.stringify(response.settings, null, 4));
-            });
-        });
-        mapkey(';ap', '#13Apply proxy info from clipboard', function() {
-            Clipboard.read(function(response) {
-                var proxyConf = JSON.parse(response.data);
-                RUNTIME('updateProxy', {
-                    operation: 'set',
-                    host: proxyConf.autoproxy_hosts,
-                    proxy: proxyConf.proxy,
-                    mode: proxyConf.proxyMode
-                });
-            });
-        });
-        // create shortcuts for the command with different parameters
-        map(';pa', ':setProxyMode always', 0, '#13set proxy mode `always`');
-        map(';pb', ':setProxyMode byhost', 0, '#13set proxy mode `byhost`');
-        map(';pd', ':setProxyMode direct', 0, '#13set proxy mode `direct`');
-        map(';ps', ':setProxyMode system', 0, '#13set proxy mode `system`');
-        map(';pc', ':setProxyMode clear', 0, '#13set proxy mode `clear`');
         mapkey('gr', '#14Read selected text or text from clipboard', function() {
             Clipboard.read(function(response) {
                 readText(window.getSelection().toString() || response.data, {verbose: true});
@@ -462,9 +429,6 @@ module.exports = function(api) {
         });
         mapkey('ge', '#12Open Chrome Extensions', function() {
             tabOpenLink("chrome://extensions/");
-        });
-        mapkey('gn', '#12Open Chrome net-internals', function() {
-            tabOpenLink("chrome://net-internals/#proxy");
         });
         mapkey(';i', '#12Open Chrome Inspect', function() {
             tabOpenLink("chrome://inspect/#devices");

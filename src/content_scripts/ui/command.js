@@ -6,75 +6,7 @@ import {
 import { RUNTIME } from '../common/runtime.js';
 
 export default (normal, command, omnibar) => {
-    command('setProxy', 'setProxy <proxy_host>:<proxy_port> [proxy_type|PROXY]', function(args) {
-        // args is an array of arguments
-        var proxy = ((args.length > 1) ? args[1] : "PROXY") + " " + args[0];
-        RUNTIME('updateProxy', {
-            proxy: proxy
-        });
-        return true;
-    });
 
-    command('setProxyMode', 'setProxyMode <always|direct|byhost|system|clear>', function(args) {
-        RUNTIME("updateProxy", {
-            mode: args[0]
-        }, function(rs) {
-            if (["byhost", "always"].indexOf(rs.proxyMode) !== -1) {
-                showBanner("{0}: {1}".format(rs.proxyMode, rs.proxy), 3000);
-            } else {
-                showBanner(rs.proxyMode, 3000);
-            }
-        });
-        // return true to close Omnibar for Commands, false to keep Omnibar on
-        return true;
-    });
-
-    command('listVoices', 'list tts voices', function() {
-        RUNTIME('getVoices', null, function(response) {
-
-            var voices = response.voices.map(function(s) {
-                return `<tr><td>${s.voiceName}</td><td>${s.lang}</td><td>${s.gender}</td><td>${s.remote}</td></tr>`;
-            });
-            voices.unshift("<tr style='font-weight: bold;'><td>voiceName</td><td>lang</td><td>gender</td><td>remote</td></tr>");
-            showPopup("<table style='width:100%'>{0}</table>".format(voices.join('')));
-        });
-    });
-    command('testVoices', 'testVoices <locale> <text>', function(args) {
-        RUNTIME('getVoices', null, function(response) {
-
-            var voices = response.voices, i = 0;
-            if (args.length > 0) {
-                voices = voices.filter(function(v) {
-                    return v.lang.indexOf(args[0]) !== -1;
-                });
-            }
-            var textToRead = "This is to test voice with SurfingKeys";
-            if (args.length > 1) {
-                textToRead = args[1];
-            }
-            var text;
-            for (i = 0; i < voices.length - 1; i++) {
-                text = `${textToRead}, ${voices[i].voiceName} / ${voices[i].lang}.`;
-                readText(text, {
-                    enqueue: true,
-                    verbose: true,
-                    voiceName: voices[i].voiceName
-                });
-            }
-            text = `${textToRead}, ${voices[i].voiceName} / ${voices[i].lang}.`;
-            readText(text, {
-                enqueue: true,
-                verbose: true,
-                voiceName: voices[i].voiceName,
-                onEnd: function() {
-                    showPopup("All voices test done.");
-                }
-            });
-        });
-    });
-    command('stopReading', '#13Stop reading.', function(args) {
-        RUNTIME('stopReading');
-    });
     command('feedkeys', 'feed mapkeys', function(args) {
         normal.feedkeys(args[0]);
     });

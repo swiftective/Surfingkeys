@@ -300,7 +300,6 @@ const Front = (function() {
             'vim-like marks',        // 10
             'Settings',              // 11
             'Chrome URLs',           // 12
-            'Proxy',                 // 13
             'Misc',                  // 14
             'Insert Mode',           // 15
             'Lurk Mode',             // 16
@@ -708,7 +707,6 @@ var StatusBar = (function() {
     // mode: 0
     // search: 1
     // searchResult: 2
-    // proxy: 3
     self.show = function(contents, duration) {
         if (timerHide) {
             clearTimeout(timerHide);

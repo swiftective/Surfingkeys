@@ -27,9 +27,6 @@ function RUNTIME(action, args, callback) {
     try {
         args.needResponse = callback !== undefined;
         chrome.runtime.sendMessage(args, callback);
-        if (action === 'read') {
-            runtime.on('onTtsEvent', callback);
-        }
     } catch (e) {
         dispatchSKEvent('showPopup', ['[runtime exception] ' + e]);
     }
@@ -50,7 +47,6 @@ var runtime = (function() {
             editableSelector: "div.CodeMirror-scroll,div.ace_content",
             cursorAtEndOfInput: true,
             defaultSearchEngine: "g",
-            defaultVoice: "Daniel",
             editableBodyCare: true,
             enableAutoFocus: true,
             enableEmojiInsertion: false,
@@ -77,7 +73,6 @@ var runtime = (function() {
             richHintsForKeystroke: 1000,
             scrollStepSize: 70,
             showModeStatus: false,
-            showProxyInStatusBar: false,
             smartPageBoundary: false,
             smoothScroll: true,
             startToShowEmoji: 2,

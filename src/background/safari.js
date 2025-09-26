@@ -33,9 +33,6 @@ function loadRawSettings(keys, cb, defaultSet) {
     });
 }
 
-function _applyProxySettings(proxyConf) {
-}
-
 function _setNewTabUrl(){
     return  "favorites://";
 }
@@ -49,7 +46,6 @@ function getLatestHistoryItem(text, maxResults, cb) {
 start({
     getLatestHistoryItem,
     loadRawSettings,
-    _applyProxySettings,
     _setNewTabUrl,
     _getContainerName
 });

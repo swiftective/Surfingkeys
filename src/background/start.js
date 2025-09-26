@@ -258,16 +258,9 @@ function start(browser) {
             findHistory: [],
             cmdHistory: [],
             sessions: {},
-            proxyMode: 'clear',
-            autoproxy_hosts: [],
-            proxy: []
         };
 
         browser.loadRawSettings(keys, function(set) {
-            if (typeof(set.proxy) === "string") {
-                set.proxy = [set.proxy];
-                set.autoproxy_hosts = [set.autoproxy_hosts];
-            }
             if (set.localPath) {
                 request(set.localPath, function(resp) {
                     set.snippets = resp;
@@ -282,8 +275,6 @@ function start(browser) {
             }
         }, tmpSet);
     }
-
-    loadSettings(null, browser._applyProxySettings);
 
     function removeTab(tabId) {
         delete tabActivated[tabId];
@@ -415,19 +406,6 @@ function start(browser) {
             case 'closeTab':
                 getActiveTab(function(tab) {
                     chrome.tabs.remove(tab.id);
-                });
-                break;
-            case 'proxyThis':
-                getActiveTab(function(tab) {
-                    var host = new URL(tab.url || tab.pendingUrl).host;
-                    updateProxy({
-                        host: host,
-                        operation: "toggle"
-                    }, function() {
-                        chrome.tabs.reload(tab.id, {
-                            bypassCache: true
-                        });
-                    });
                 });
                 break;
             default:
@@ -635,7 +613,6 @@ function start(browser) {
         chrome.storage.local.clear();
         chrome.storage.sync.clear();
         loadSettings(null, function(data) {
-            browser._applyProxySettings(data);
             _response(message, sendResponse, {
                 settings: data
             });
@@ -1391,66 +1368,6 @@ function start(browser) {
         };
     };
 
-    function updateProxy(message, cb) {
-        loadSettings(['proxyMode', 'proxy', 'autoproxy_hosts'], function(proxyConf) {
-            if (message.operation === "deleteProxyPair") {
-                proxyConf.proxy.splice(message.number, 1);
-                proxyConf.autoproxy_hosts.splice(message.number, 1);
-            } else if (message.operation === "set") {
-                proxyConf.proxyMode = message.mode;
-                proxyConf.proxy = message.proxy;
-                proxyConf.autoproxy_hosts = message.host;
-            } else {
-                if (message.mode) {
-                    proxyConf.proxyMode = message.mode;
-                }
-                if (!message.number) {
-                    message.number = 0;
-                }
-                if (message.proxy) {
-                    proxyConf.proxy[message.number] = message.proxy;
-                    if (proxyConf.autoproxy_hosts.length <= message.number) {
-                        proxyConf.autoproxy_hosts[message.number] = [];
-                    }
-                }
-                if (message.host) {
-                    var hostsDict = dictFromArray(proxyConf.autoproxy_hosts[message.number], 1);
-                    var hosts = message.host.split(/\s*[ ,\n]\s*/);
-                    if (message.operation === "toggle") {
-                        hosts.forEach(function(host) {
-                            if (hostsDict.hasOwnProperty(host)) {
-                                delete hostsDict[host];
-                            } else {
-                                hostsDict[host] = 1;
-                            }
-                        });
-                    } else if (message.operation === "add") {
-                        hosts.forEach(function(host) {
-                            hostsDict[host] = 1;
-                        });
-                    } else {
-                        hosts.forEach(function(host) {
-                            delete hostsDict[host];
-                        });
-                    }
-                    proxyConf.autoproxy_hosts[message.number] = Object.keys(hostsDict);
-                }
-            }
-            var diffSet = {
-                autoproxy_hosts: proxyConf.autoproxy_hosts,
-                proxyMode: proxyConf.proxyMode,
-                proxy: proxyConf.proxy
-            };
-            _updateAndPostSettings(diffSet);
-            browser._applyProxySettings(proxyConf);
-            cb && cb(diffSet);
-        });
-    }
-    self.updateProxy = function(message, sender, sendResponse) {
-        updateProxy(message, function(diffSet) {
-            _response(message, sendResponse, diffSet);
-        });
-    };
     self.setZoom = function(message, sender, sendResponse) {
         var tabId = sender.tab.id;
         var zoomFactor = message.zoomFactor * message.repeats;
@@ -1597,39 +1514,6 @@ function start(browser) {
         return {
             queueURLs: _queueURLs
         };
-    };
-
-    self.getVoices = function(message, sender, sendResponse) {
-        chrome.tts.getVoices(function(voices) {
-            _response(message, sendResponse, {
-                voices: voices
-            });
-        });
-    };
-
-    self.read = function(message, sender, sendResponse) {
-        var options = message.options || {};
-        options.onEvent = function(ttsEvent) {
-            // https://developer.chrome.com/docs/extensions/mv2/messaging/
-            // If multiple pages are listening for onMessage events, only the first to call sendResponse()
-            // for a particular event will succeed in sending the response. All other responses to that event will be ignored.
-            //
-            // Thus for the later events after `start` we will send them in sendTabMessage.
-            if (ttsEvent.type === "start") {
-                _response(message, sendResponse, {
-                    ttsEvent: ttsEvent
-                });
-            } else {
-                sendTabMessage(sender.tab.id, -1, {
-                    subject: 'onTtsEvent',
-                    ttsEvent: ttsEvent
-                });
-            }
-        };
-        chrome.tts.speak(message.content, options);
-    };
-    self.stopReading = function(message, sender, sendResponse) {
-        chrome.tts.stop();
     };
 
     self.openIncognito = function(message, sender, sendResponse) {

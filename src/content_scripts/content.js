@@ -121,13 +121,6 @@ function applySettings(api, normal, rs) {
             }
         }
     }
-    if (runtime.conf.showProxyInStatusBar && 'proxyMode' in rs) {
-        var proxyMode = rs.proxyMode;
-        if (["byhost", "always"].indexOf(rs.proxyMode) !== -1) {
-            proxyMode = "{0}: {1}".format(rs.proxyMode, rs.proxy);
-        }
-        dispatchSKEvent('showStatus', [[undefined, undefined, undefined, proxyMode]]);
-    }
 
     RUNTIME('getState', {
         blocklistPattern: runtime.conf.blocklistPattern ? runtime.conf.blocklistPattern.toJSON() : undefined,

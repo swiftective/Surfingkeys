@@ -16,14 +16,11 @@ function modifyManifest(browser, mode, buffer) {
         manifest.options_ui = {
             page: "pages/options.html"
         };
-        manifest.permissions.push("cookies",
-            "contextualIdentities");
     } else if (browser === "safari") {
         manifest.incognito = "split";
         manifest.options_page = "pages/options.html";
         manifest.background.persistent = false;
     } else {
-        manifest.permissions.push("tts");
         manifest.permissions.push("downloads.shelf");
         manifest.background.persistent = false;
         manifest.incognito = "split";
