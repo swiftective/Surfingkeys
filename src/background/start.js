@@ -1553,7 +1553,6 @@ function start(browser) {
     };
 
     self.getContainerName = browser._getContainerName(self, _response);
-    chrome.runtime.setUninstallURL("http://brookhong.github.io/2018/01/30/why-did-you-uninstall-surfingkeys.html");
 
     self.connectNative = function (message, sender, sendResponse) {
         if (browser.nvimServer) {

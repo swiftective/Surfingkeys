@@ -765,7 +765,7 @@ div.hint-scrollable {
             if (shiftKey && runtime.conf.hintShiftNonActive) {
                 tabbed = true;
                 active = false;
-            } else if (shiftKey && getBrowserName() === "Firefox") {
+            } else if (shiftKey) {
                 // mouseButton does not work for firefox in mouse event.
                 tabbed = true;
                 active = true;
