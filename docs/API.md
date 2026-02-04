@@ -665,7 +665,7 @@ Check whether an element is in viewport.
 *   `el` **[Element][115]** the element to be checked.
 *   `ignoreSize` **[boolean][111]** whether to ignore size of the element, otherwise the element must be with size 4\*4. (optional, default `false`)
 
-Returns **[boolean][111]** 
+Returns **[boolean][111]**
 
 ## getClickableElements
 
@@ -954,7 +954,5 @@ RUNTIME('getTabs', {queryInfo: {currentWindow: true}}, response => {
 [112]: https://developer.mozilla.org/docs/Web/HTML/Element
 
 [113]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
-
-[114]: https://github.com/brookhong/Surfingkeys/wiki/Register-inline-query
 
 [115]: https://developer.mozilla.org/docs/Web/API/Element

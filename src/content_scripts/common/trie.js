@@ -1,5 +1,4 @@
 /*
- *  A simple implementation of Trie by brook hong, for less memory usage and better performance.
  *
  *  Each node has at most two properties, stem or meta. All other properties are expected to be
  *  one character, taken to be child of the node.

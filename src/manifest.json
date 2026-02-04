@@ -30,7 +30,7 @@
     "default_title": "Surfingkeys",
     "default_popup": "pages/popup.html"
   },
-  "author": "brook hong",
+  "author": "swiftective",
   "permissions": [
     "<all_urls>",
     "tabs",

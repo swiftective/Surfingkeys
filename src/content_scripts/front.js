@@ -231,8 +231,6 @@ function createFront(insert, normal, hints, visual, browser) {
     document.addEventListener("surfingkeys:hidePopup", hidePopup);
 
     function updateElementBehindEditor(data) {
-        // setEditorText and setValueWithEventDispatched are experimental APIs from Brook Build of Chromium
-        // https://brookhong.github.io/2021/04/18/brook-build-of-chromium.html
         if (elementBehindEditor.nodeName === "DIV") {
             if (elementBehindEditor.className === "CodeMirror-code") {
                 window.getSelection().selectAllChildren(elementBehindEditor)
@@ -241,22 +239,13 @@ function createFront(insert, normal, hints, visual, browser) {
                 elementBehindEditor.dispatchEvent(new ClipboardEvent('paste', {clipboardData: dataTransfer}))
             } else {
                 data = data.replace(/\n+$/, '');
-
-                if (typeof elementBehindEditor.setEditorText === "function") {
-                    elementBehindEditor.setEditorText(data);
-                } else {
-                    elementBehindEditor.innerText = data;
-                }
+                elementBehindEditor.innerText = data;
             }
         } else {
-            if (typeof elementBehindEditor.setValueWithEventDispatched === "function") {
-                elementBehindEditor.setValueWithEventDispatched(data);
-            } else {
-                elementBehindEditor.value = data;
-                var evt = document.createEvent("HTMLEvents");
-                evt.initEvent("change", false, true);
-                elementBehindEditor.dispatchEvent(evt);
-            }
+            elementBehindEditor.value = data;
+            var evt = document.createEvent("HTMLEvents");
+            evt.initEvent("change", false, true);
+            elementBehindEditor.dispatchEvent(evt);
         }
     }
 
@@ -402,7 +391,6 @@ function createFront(insert, normal, hints, visual, browser) {
                 showQueryResult(pos, result);
             };
         } else {
-            tabOpenLink("https://github.com/brookhong/Surfingkeys/wiki/Register-inline-query");
             hidePopup();
         }
     };
@@ -413,7 +401,6 @@ function createFront(insert, normal, hints, visual, browser) {
      * @param {object} args `url`: string or function, the dictionary service url or a function to return the dictionary service url, `parseResult`: function, a function to parse result from dictionary service and return a HTML string to render explanation, `headers`: object[optional], in case your dictionary service needs authentication.
      * @name Front.registerInlineQuery
      *
-     * @see [example](https://github.com/brookhong/Surfingkeys/wiki/Register-inline-query).
      */
     self.registerInlineQuery = function(args) {
         _inlineQuery = args;

@@ -323,7 +323,6 @@ const Front = (function() {
                 }
             }).join("");
 
-            help_groups += `<p style='float:right; width:100%; text-align:right'><a href='https://github.com/brookhong/surfingkeys' target='_blank' style='color:#0095dd'>${locale("More help")}</a></p>`;
             cb(help_groups);
         });
     }
@@ -392,7 +391,8 @@ const Front = (function() {
     _editor.onShow = function(message) {
         if (!_aceEditor) {
             _aceEditor = new Promise((resolve, reject) => {
-                import(/* webpackIgnore: true */ './ace.js').then(() => {
+                const acePath = './ace.js';
+                import(/* @vite-ignore */ acePath).then(() => {
                     resolve(createAceEditor(normal, self));
                 });
             });
@@ -403,45 +403,7 @@ const Front = (function() {
     };
     let _neovim = null;
     _nvim.onShow = function(message) {
-        if (!_neovim) {
-            _neovim  = new Promise((resolve, reject) => {
-                import(/* webpackIgnore: true */ './neovim_lib.js').then((nvimlib) => {
-                    nvimlib.default(_nvim).then(({nvim, destroy}) => {
-                        function quitNvim() {
-                            normal.enter();
-                            destroy();
-                            self.hidePopup();
-                        }
-                        function rpc(data) {
-                            const [ event, args ] = data;
-                            if (event === "WriteData") {
-                                self.contentCommand({
-                                    action: 'ace_editor_saved',
-                                    data: args[0].join("\r")
-                                });
-                                quitNvim();
-                            }
-                        }
-                        nvim.on('nvim:open', () => {
-                            nvim.on('surfingkeys:rpc', rpc);
-                        });
-                        nvim.on('nvim:close', () => {
-                            nvim.off('surfingkeys:rpc', rpc);
-                            quitNvim();
-                        });
-                        resolve(nvim);
-                    });
-                });
-            });
-        }
-        _neovim.then((nvim) => {
-            normal.exit();
-            RUNTIME('connectNative', {mode: "embed"}, (resp) => {
-                nvim.connect(resp.url, () => {
-                    nvim.command(`call NewScratch("${message.file_name}", "${encode(message.content)}", "${message.type}")`);
-                });
-            });
-        });
+        // Neovim support removed
     };
     _actions['showEditor'] = function(message) {
         if (message.onEditorSaved) {

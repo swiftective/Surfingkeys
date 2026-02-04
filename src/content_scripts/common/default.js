@@ -1,4 +1,4 @@
-module.exports = function(api) {
+export default function(api) {
     const {
         addSearchAlias,
         cmap,
@@ -432,14 +432,6 @@ module.exports = function(api) {
         });
         mapkey(';i', '#12Open Chrome Inspect', function() {
             tabOpenLink("chrome://inspect/#devices");
-        });
-        mapkey(';v', '#11Open neovim', function() {
-            tabOpenLink("/pages/neovim.html");
-        });
-        mapkey('<Ctrl-Alt-i>', '#1Go to edit box with neovim editor', function() {
-            Hints.create("input, textarea, *[contenteditable=true], select", function(element) {
-                Front.showEditor(element, null, null, true);
-            });
         });
     }
 
