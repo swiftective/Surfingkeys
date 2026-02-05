@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="src/icon/128.png" alt="Orbit Logo" width="128"/>
+  <img src="src/icons/128.png" alt="Orbit Logo" width="128"/>
 </p>
 
 <h1 align="center">ORBIT</h1>
