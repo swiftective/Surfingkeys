@@ -213,7 +213,7 @@ function start(browser) {
     if (window === top) {
         new Promise((r, j) => {
             if (window.location.href === chrome.extension.getURL("/pages/options.html")) {
-                import(/* webpackIgnore: true */ './pages/options.js').then((optionsLib) => {
+                import(/* @vite-ignore */ './pages/options.js').then((optionsLib) => {
                     optionsLib.default(
                         RUNTIME,
                         KeyboardUtils,

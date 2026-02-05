@@ -35,7 +35,6 @@ function RUNTIME(action, args, callback) {
 var runtime = (function() {
     var self = {
         conf: {
-            autoSpeakOnInlineQuery: false,
             lastKeys: "",
             // local part from settings
             blocklistPattern: undefined,
