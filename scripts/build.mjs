@@ -27,10 +27,6 @@ const inputs = {
     'pages/ace': path.resolve(projectRoot, 'src/content_scripts/ace.js'),
 };
 
-if (browser !== "safari") {
-    inputs['pages/markdown'] = path.resolve(projectRoot, 'src/content_scripts/markdown.js');
-}
-
 for (const [name, entryPath] of Object.entries(inputs)) {
     console.log(`Building ${name}...`);
     try {
@@ -117,10 +113,6 @@ function shouldIgnore(name, ignores) {
         }
     }
     return false;
-}
-
-if (browser === "safari") {
-    pagesIgnore.push('**/markdown.html', '**/donation.png');
 }
 
 // Copy pages with filter

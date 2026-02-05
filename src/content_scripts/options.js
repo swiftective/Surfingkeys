@@ -77,7 +77,6 @@ export default function(
         document.querySelector("#localPathForSettings").style.display = "";
     } else if (getBrowserName().startsWith("Safari")) {
         document.querySelector("#localPathHelpForFile").remove();
-        document.querySelector("#donationDiv").style.display = "none";
     }
 
     var basicSettingsDiv = document.getElementById("basicSettings");

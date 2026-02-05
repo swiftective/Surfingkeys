@@ -1,7 +1,5 @@
-import { encode } from 'js-base64';
 import {
     attachFaviconToImgSrc,
-    createElementWithContent,
     generateQuickGuid,
     getAnnotations,
     getBrowserName,

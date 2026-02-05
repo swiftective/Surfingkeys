@@ -492,9 +492,6 @@ export default function(api) {
         mapkey('gs', '#12View page source', function() {
             RUNTIME("viewSource", { tab: { tabbed: true }});
         });
-        mapkey(';pm', '#11Preview markdown', function() {
-            tabOpenLink("/pages/markdown.html");
-        });
         mapkey(';di', '#1Download image', function() {
             Hints.create('img', function(element) {
                 RUNTIME('download', {

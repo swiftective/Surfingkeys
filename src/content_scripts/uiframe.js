@@ -1,9 +1,8 @@
 import {
-    getBrowserName,
     getDocumentOrigin
 } from './common/utils.js';
 
-function createUiHost(browser, onload) {
+function createUiHostWithErrors(browser, onload) {
     var uiHost = document.createElement("div");
     uiHost.style.display = "block";
     uiHost.style.opacity = 1;
@@ -128,6 +127,14 @@ function createUiHost(browser, onload) {
         uiHost.remove();
     };
     document.documentElement.appendChild(uiHost);
+}
+
+function createUiHost(browser, onload) {
+  try {
+    createUiHostWithErrors(browser, onload)
+  } catch (_) {
+    console.log("caught errors")
+  }
 }
 
 export default createUiHost;

@@ -21,7 +21,12 @@ function getBrowserName() {
 }
 
 function isInUIFrame() {
-    return document.location.href.indexOf(chrome.extension.getURL("/")) === 0;
+  try {
+    const bool = document.location.href.indexOf(chrome.extension.getURL("/")) === 0;
+    return bool
+  } catch (_) {
+    return false
+  }
 }
 
 function timeStampString(t) {
