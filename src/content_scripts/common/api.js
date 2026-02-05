@@ -501,48 +501,6 @@ function createAPI(clipboard, insert, normal, hints, visual, front, browser) {
         front.openOmniquery({query: getWordUnderCursor(), style: "opacity: 0.8;"});
     });
     imapkey("<Ctrl-'>", '#15Toggle quotes in an input element', toggleQuote);
-    function openVim(useNeovim) {
-        var element = getRealEdit();
-        element.blur();
-        insert.exit();
-        front.showEditor(element, null, null, useNeovim);
-    }
-    imapkey('<Ctrl-i>', '#15Open vim editor for current input', function() {
-        openVim(false);
-    });
-    const browserName = getBrowserName();
-    if (browserName === "Chrome") {
-        imapkey('<Ctrl-Alt-i>', '#15Open neovim for current input', function() {
-            openVim(true);
-        });
-        mapkey(';s', 'Toggle PDF viewer from SurfingKeys', function() {
-            var pdfUrl = window.location.href;
-            if (pdfUrl.indexOf(chrome.extension.getURL("/pages/pdf_viewer.html")) === 0) {
-                pdfUrl = window.location.search.substr(3);
-                chrome.storage.local.set({"noPdfViewer": 1}, function() {
-                    window.location.replace(pdfUrl);
-                });
-            } else {
-                if (document.querySelector("EMBED") && document.querySelector("EMBED").getAttribute("type") === "application/pdf") {
-                    chrome.storage.local.remove("noPdfViewer", function() {
-                        window.location.replace(pdfUrl);
-                    });
-                } else {
-                    chrome.storage.local.get("noPdfViewer", function(resp) {
-                        if(!resp.noPdfViewer) {
-                            chrome.storage.local.set({"noPdfViewer": 1}, function() {
-                                showBanner("PDF viewer disabled.");
-                            });
-                        } else {
-                            chrome.storage.local.remove("noPdfViewer", function() {
-                                showBanner("PDF viewer enabled.");
-                            });
-                        }
-                    });
-                }
-            }
-        });
-    }
 
     mapkey(";ql", '#0Show last action', function() {
         showPopup(htmlEncode(runtime.conf.lastKeys.map(function(k) {

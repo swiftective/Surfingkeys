@@ -102,12 +102,14 @@ try {
 // Copy logic
 console.log('Copying assets...');
 
+const pagesIgnore = []
+
 function shouldIgnore(name, ignores) {
     for (const pattern of ignores) {
         if (pattern.startsWith('**/')) {
-            const suffix = pattern.substring(3); // e.g. "neovim.*"
+            const suffix = pattern.substring(3);
             if (suffix.endsWith('.*')) {
-                const prefix = suffix.slice(0, -2); // "neovim"
+                const prefix = suffix.slice(0, -2);
                 if (name.startsWith(prefix)) return true;
             } else if (name === suffix) {
                 return true;
@@ -117,7 +119,6 @@ function shouldIgnore(name, ignores) {
     return false;
 }
 
-const pagesIgnore = ['**/neovim.*', '**/pdf_viewer.html'];
 if (browser === "safari") {
     pagesIgnore.push('**/markdown.html', '**/donation.png');
 }

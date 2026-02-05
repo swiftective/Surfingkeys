@@ -175,7 +175,6 @@ const Front = (function() {
     const _usage = document.getElementById('sk_usage');
     const _popup = document.getElementById('sk_popup');
     const _editor = document.getElementById('sk_editor');
-    const _nvim = document.getElementById('sk_nvim');
     const _tabs = document.getElementById('sk_tabs');
     const _banner = document.getElementById('sk_banner');
     const _bubble = document.getElementById('sk_bubble');
@@ -401,19 +400,11 @@ const Front = (function() {
             editor.show(message);
         });
     };
-    let _neovim = null;
-    _nvim.onShow = function(message) {
-        // Neovim support removed
-    };
     _actions['showEditor'] = function(message) {
         if (message.onEditorSaved) {
             self.onEditorSaved = message.onEditorSaved;
         }
-        if (message.file_name) {
-            showElement(_nvim, message);
-        } else {
-            showElement(_editor, message);
-        }
+        showElement(_editor, message);
     };
     self.showEditor = _actions['showEditor'];
     _actions['openOmnibar'] = function(message) {

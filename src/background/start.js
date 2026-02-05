@@ -1553,23 +1553,6 @@ function start(browser) {
     };
 
     self.getContainerName = browser._getContainerName(self, _response);
-
-    self.connectNative = function (message, sender, sendResponse) {
-        if (browser.nvimServer) {
-            browser.nvimServer.instance.then(({url, nm}) => {
-                nm.postMessage({
-                    mode: message.mode
-                });
-                _response(message, sendResponse, {
-                    url,
-                });
-            }).catch((error) => {
-                _response(message, sendResponse, {
-                    error,
-                });
-            });
-        }
-    };
 }
 
 export {
