@@ -598,6 +598,69 @@ function start(browser) {
             }
         });
     };
+    self.jumpToDomainOfMark = function(message, sender, sendResponse) {
+        loadSettings("marks", function(data) {
+            var marks = data.marks;
+            if (marks.hasOwnProperty(message.mark)) {
+                var markInfo = marks[message.mark];
+                var markDomain = "";
+                try {
+                    markDomain = new URL(markInfo.url).hostname;
+                } catch (e) {
+                    return;
+                }
+                chrome.tabs.query({}, function(tabs) {
+                    var matchingTabs = tabs.filter(function(t) {
+                        try {
+                            return new URL(t.url).hostname === markDomain;
+                        } catch (e) {
+                            return false;
+                        }
+                    });
+
+                    if (matchingTabs.length > 0) {
+                        matchingTabs.sort(function(a, b) {
+                            if (a.windowId !== b.windowId) {
+                                return a.windowId - b.windowId;
+                            }
+                            return a.index - b.index;
+                        });
+
+                        var currentTab = sender.tab;
+                        var currentIndex = -1;
+                        for (var i = 0; i < matchingTabs.length; i++) {
+                            if (matchingTabs[i].id === currentTab.id) {
+                                currentIndex = i;
+                                break;
+                            }
+                        }
+
+                        var nextTab;
+                        if (currentIndex !== -1) {
+                            nextTab = matchingTabs[(currentIndex + 1) % matchingTabs.length];
+                        } else {
+                            nextTab = matchingTabs[0];
+                            for (var i = 0; i < matchingTabs.length; i++) {
+                                if (matchingTabs[i].windowId > currentTab.windowId || (matchingTabs[i].windowId === currentTab.windowId && matchingTabs[i].index > currentTab.index)) {
+                                    nextTab = matchingTabs[i];
+                                    break;
+                                }
+                            }
+                        }
+
+                        chrome.tabs.update(nextTab.id, {
+                            active: true
+                        });
+                        if (nextTab.windowId !== currentTab.windowId) {
+                            chrome.windows.update(nextTab.windowId, {
+                                focused: true
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    };
 
     function _loadSettingsFromUrl(url, cb) {
         request(url, function(resp) {

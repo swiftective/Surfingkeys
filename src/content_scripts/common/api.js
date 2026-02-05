@@ -553,6 +553,11 @@ function createAPI(clipboard, insert, normal, hints, visual, front, browser) {
 
     mapkey('m', '#10Add current URL to vim-like marks', normal.addVIMark);
     mapkey("'", '#10Jump to vim-like mark', normal.jumpVIMark);
+    mapkey(",", '#10Jump to tab with same domain as vim-like mark', function(mark) {
+        RUNTIME('jumpToDomainOfMark', {
+            mark: mark
+        });
+    });
     mapkey("<Ctrl-'>", '#10Jump to vim-like mark in new tab.', function(mark) {
         normal.jumpVIMark(mark);
     });
