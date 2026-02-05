@@ -1,7 +1,7 @@
 {
-  "name": "Surfingkeys",
+  "name": "Orbit",
   "version": "1.15.0",
-  "description": "Map your keys for web surfing, expand your browser with javascript and keyboard.",
+  "description": "Break the mouse trap. Enter Orbit!",
   "main": "background.js",
   "directories": {
     "doc": "docs"

@@ -8,7 +8,7 @@ String.prototype.format = function() {
 };
 
 var disableAll = document.getElementById('disableAll'),
-    version = "Surfingkeys " + chrome.runtime.getManifest().version;
+    version = "Orbit " + chrome.runtime.getManifest().version;
 
 function RUNTIME(action, args, callback) {
     (args = args || {}).action = action;

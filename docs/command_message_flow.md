@@ -1,6 +1,6 @@
 # Command message flow
 
-Frontend command is to call functions provided by SurfingKeys' frontend, such as `showUsage` / `openOmnibar` etc. Content command is to call functions implemented in content windows, such as `visualUpdate` / `visualClear` etc. The document is about how to refactory the command message flow between windows.
+Frontend command is to call functions provided by Orbit' frontend, such as `showUsage` / `openOmnibar` etc. Content command is to call functions implemented in content windows, such as `visualUpdate` / `visualClear` etc. The document is about how to refactory the command message flow between windows.
 
 ## window types
 
@@ -18,7 +18,7 @@ Frontend command is to call functions provided by SurfingKeys' frontend, such as
 
 * frontend
 
-    The frontend UI of SurfingKeys, created in a shadowRoot by top window.
+    The frontend UI of Orbit, created in a shadowRoot by top window.
 
 ## current design
 

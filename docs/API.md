@@ -375,7 +375,7 @@ Search selected with.
 *   `se` **[string][106]** a search engine's search URL
 *   `onlyThisSite` **[boolean][111]** whether to search only within current site, need support from the provided search engine. (optional, default `false`)
 *   `interactive` **[boolean][111]** whether to search in interactive mode, in case that you need some small modification on the selected content. (optional, default `false`)
-*   `alias` **[string][106]** only used with interactive mode, in such case the url from `se` is ignored, SurfingKeys will construct search URL from the alias registered by `addSearchAlias`. (optional, default `""`)
+*   `alias` **[string][106]** only used with interactive mode, in such case the url from `se` is ignored, Orbit will construct search URL from the alias registered by `addSearchAlias`. (optional, default `""`)
 
 ### Examples
 
@@ -668,7 +668,7 @@ Returns **[boolean][111]**
 
 ## getClickableElements
 
-Get all clickable elements. SurfingKeys has its own logic to identify clickable elements, such as a `HTMLAnchorElement` or elements with cursor as pointer. This function provides two parameters to identify those clickable elements that SurfingKeys failed to identify.
+Get all clickable elements. Orbit has its own logic to identify clickable elements, such as a `HTMLAnchorElement` or elements with cursor as pointer. This function provides two parameters to identify those clickable elements that Orbit failed to identify.
 
 ### Parameters
 

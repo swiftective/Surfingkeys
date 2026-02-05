@@ -287,12 +287,12 @@ function createNormal(insert) {
             }, function(resp) {
                 if (resp.state === "disabled") {
                     if (resp.blocklist.hasOwnProperty(".*")) {
-                        showBanner('Surfingkeys is globally disabled, please enable it globally from popup menu.', 3000);
+                        showBanner('Orbit is globally disabled, please enable it globally from popup menu.', 3000);
                     } else {
-                        showBanner('Surfingkeys turned OFF for ' + resp.url, 3000);
+                        showBanner('Orbit turned OFF for ' + resp.url, 3000);
                     }
                 } else {
-                    showBanner('Surfingkeys turned ON for ' + resp.url, 3000);
+                    showBanner('Orbit turned ON for ' + resp.url, 3000);
                 }
             });
         } else {
