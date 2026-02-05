@@ -59,7 +59,6 @@
   "web_accessible_resources": [
     "pages/default.js",
     "pages/emoji.tsv",
-    "pages/l10n.json",
     "pages/frontend.html",
     "pages/shadow.css",
     "pages/default.css"
