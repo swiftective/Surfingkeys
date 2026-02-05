@@ -2,7 +2,6 @@ import { RUNTIME } from './common/runtime.js';
 import {
     setSanitizedContent,
 } from './common/utils.js';
-import { marked } from 'marked';
 
 RUNTIME("getTopSites", null, function(response) {
     var urls = response.urls.map(function(u) {
@@ -10,7 +9,7 @@ RUNTIME("getTopSites", null, function(response) {
     });
     setSanitizedContent(document.querySelector("#topSites>ul"), urls.join("\n"));
     var source = document.getElementById('quickIntroSource').innerHTML;
-    setSanitizedContent(document.querySelector('#quickIntro'), marked.parse(source));
+    setSanitizedContent(document.querySelector('#quickIntro'), source);
 
     var screen1 = document.querySelector("#screen1");
     screen1.show();

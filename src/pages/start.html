@@ -7,23 +7,38 @@
         <link rel="stylesheet" href="start.css">
     </head>
     <body>
+        <div id="screen1" style="display: none;">
+            <div id="topSites">
+                <ul></ul>
+            </div>
+            <div id="quickIntro">
+            </div>
+            <div id="show-full-list-of-surfingkeys">
+                <a href="#">Show full list of Orbit</a>
+            </div>
+        </div>
+        <div id="screen2" style="display: none;">
+            <div id="back">Back</div>
+            <div id="sk_usage"></div>
+        </div>
+        <div id="randomTip"></div>
         <template id="quickIntroSource">
-## Get started with Orbit.
-* `f` to follow links.
-* `gg` to scroll to the top of the page.
-* `G` to scroll to the bottom of the page.
-* `e` to scroll a page up.
-* `d` to scroll a page down.
-* `E` to go one tab left.
-* `R` to go one tab right.
-* `S` to go back in history.
-* `D` to go forward in history.
-* `og` to open Google Search.
-* `t` to open URL.
-* `se` to edit Settings.
-* `?` to find more shortcuts.
-
-## [Show full list of Orbit](#)
+            <h2>Get started with Orbit.</h2>
+            <ul>
+                <li><code>f</code> to follow links.</li>
+                <li><code>gg</code> to scroll to the top of the page.</li>
+                <li><code>G</code> to scroll to the bottom of the page.</li>
+                <li><code>e</code> to scroll a page up.</li>
+                <li><code>d</code> to scroll a page down.</li>
+                <li><code>E</code> to go one tab left.</li>
+                <li><code>R</code> to go one tab right.</li>
+                <li><code>S</code> to go back in history.</li>
+                <li><code>D</code> to go forward in history.</li>
+                <li><code>og</code> to open Google Search.</li>
+                <li><code>t</code> to open URL.</li>
+                <li><code>se</code> to edit Settings.</li>
+                <li><code>?</code> to find more shortcuts.</li>
+            </ul>
         </template>
         <script src="start.js"></script>
         <script src="../content.js"></script>

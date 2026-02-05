@@ -837,12 +837,29 @@ function attachFaviconToImgSrc(tab, imgEl) {
     }
 }
 
+function debounce(func, wait) {
+    let timeout;
+    const debounced = function() {
+        const context = this;
+        const args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(function() {
+            func.apply(context, args);
+        }, wait);
+    };
+    debounced.cancel = function() {
+        clearTimeout(timeout);
+    };
+    return debounced;
+}
+
 export {
     LOG,
     actionWithSelectionPreserved,
     attachFaviconToImgSrc,
     constructSearchURL,
     createElementWithContent,
+    debounce,
     dispatchMouseEvent,
     dispatchSKEvent,
     filterAncestors,

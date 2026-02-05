@@ -24,31 +24,13 @@
   "homepage": "https://github.com/swiftective/Surfingkeys#readme",
   "devDependencies": {
     "@types/events": "^3.0.3",
-    "@types/lodash": "^4.17.18",
     "@types/offscreencanvas": "^2019.7.3",
     "typescript": "^4.9.5",
     "vite": "^7.3.1"
   },
   "dependencies": {
-    "@msgpack/msgpack": "^2.7.0",
-    "@pixi/app": "^6.2.1",
-    "@pixi/constants": "^6.2.1",
-    "@pixi/core": "^6.2.1",
-    "@pixi/display": "^6.2.1",
-    "@pixi/extensions": "^6.2.1",
-    "@pixi/graphics": "^6.2.1",
-    "@pixi/math": "^6.2.1",
-    "@pixi/runner": "^6.2.1",
-    "@pixi/settings": "^6.2.1",
-    "@pixi/sprite": "^6.2.1",
-    "@pixi/ticker": "^6.2.1",
-    "@pixi/unsafe-eval": "^6.2.1",
-    "@pixi/utils": "^6.2.1",
     "ace-builds": "^1.4.12",
-    "dompurify": "^3.2.4",
-    "js-base64": "^3.7.2",
-    "lodash": "^4.17.21",
-    "marked": "^4.0.10"
+    "dompurify": "^3.2.4"
   },
   "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977"
 }
