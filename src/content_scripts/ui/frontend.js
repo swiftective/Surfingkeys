@@ -198,27 +198,6 @@ const Front = (function() {
 
     var _display;
     self.startInputGuard = () => {
-        if (getBrowserName().startsWith("Safari")) {
-            var inputGuard = setInterval(() => {
-                let input = null;
-                for (const a of document.querySelectorAll("input, textarea")) {
-                    if (a.getBoundingClientRect().width) {
-                        input = a;
-                        break;
-                    }
-                }
-                if (input && document.activeElement !== input) {
-                    input.focus();
-                    input.value = " "
-                    setTimeout(() => {
-                        input.value = ""
-                    }, 10);
-                } else {
-                    clearInterval(inputGuard);
-                }
-                console.log(inputGuard);
-            }, 100);
-        }
     };
     _actions['hidePopup'] = function() {
         if (_display && _display.style.display !== "none") {
@@ -730,20 +709,19 @@ var Find = (function() {
         historyInc = -1;
         StatusBar.show(["/", '<input id="sk_find" class="sk_theme"/>']);
         input = Front.statusBar.querySelector("input");
-        if (!getBrowserName().startsWith("Safari")) {
-            input.oninput = function() {
-                if (input.value.length && input.value !== ".") {
-                    Front.visualCommand({
-                        action: 'visualUpdate',
-                        query: input.value
-                    });
-                    // To find in usage popup will set focus and selection elsewhere
-                    // we need bring it back
-                    input.focus();
-                    input.setSelectionRange(input.value.length, input.value.length);
-                }
-            };
-        }
+        input.oninput = function() {
+          if (input.value.length && input.value !== ".") {
+            Front.visualCommand({
+              action: 'visualUpdate',
+              query: input.value
+            });
+            // To find in usage popup will set focus and selection elsewhere
+            // we need bring it back
+            input.focus();
+            input.setSelectionRange(input.value.length, input.value.length);
+          }
+        };
+
         var findHistory = [];
         RUNTIME('getSettings', {
             key: 'findHistory'

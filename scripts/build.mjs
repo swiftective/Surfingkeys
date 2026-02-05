@@ -161,10 +161,6 @@ try {
 
     if (browser === "firefox") {
         manifest.options_ui = { page: "pages/options.html" };
-    } else if (browser === "safari") {
-        manifest.incognito = "split";
-        manifest.options_page = "pages/options.html";
-        manifest.background.persistent = false;
     } else {
         manifest.permissions.push("downloads.shelf");
         manifest.background.persistent = false;

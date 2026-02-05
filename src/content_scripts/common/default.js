@@ -432,93 +432,92 @@ export default function(api) {
         });
     }
 
-    if (!getBrowserName().startsWith("Safari")) {
-        mapkey('t', '#8Open a URL', function() {
-            Front.openOmnibar({type: "URLs"});
+    mapkey('t', '#8Open a URL', function() {
+      Front.openOmnibar({type: "URLs"});
+    });
+    mapkey('go', '#8Open a URL in current tab', function() {
+      Front.openOmnibar({type: "URLs", tabbed: false});
+    });
+    mapkey('ox', '#8Open recently closed URL', function() {
+      Front.openOmnibar({type: "RecentlyClosed"});
+    });
+    mapkey('X', '#3Restore closed tab', function() {
+      RUNTIME("openLast");
+    });
+    mapkey('b', '#8Open a bookmark', function() {
+      Front.openOmnibar(({type: "Bookmarks"}));
+    });
+    mapkey('ab', '#8Bookmark current page to selected folder', function() {
+      var page = {
+        url: window.location.href,
+        title: document.title
+      };
+      Front.openOmnibar(({type: "AddBookmark", extra: page}));
+    });
+    mapkey('oh', '#8Open URL from history', function() {
+      Front.openOmnibar({type: "History"});
+    });
+    mapkey('W', '#3Move current tab to another window',  function() {
+      Front.openOmnibar(({type: "Windows"}));
+    });
+    mapkey(';gt', '#3Gather filtered tabs into current window', function() {
+      Front.openOmnibar({type: "Tabs", extra: {
+        action: "gather"
+      }});
+    });
+    mapkey(';gw', '#3Gather all tabs into current window',  function() {
+      RUNTIME("gatherWindows");
+    });
+    mapkey('<<', '#3Move current tab to left', function() {
+      RUNTIME('moveTab', {
+        step: -1
+      });
+    });
+    mapkey('>>', '#3Move current tab to right', function() {
+      RUNTIME('moveTab', {
+        step: 1
+      });
+    });
+    mapkey('yd', "#7Copy current downloading URL", function() {
+      RUNTIME('getDownloads', {
+        query: {state: "in_progress"}
+      }, function(response) {
+          var items = response.downloads.map(function(o) {
+            return o.url;
+          });
+          Clipboard.write(items.join(','));
         });
-        mapkey('go', '#8Open a URL in current tab', function() {
-            Front.openOmnibar({type: "URLs", tabbed: false});
+    });
+    mapkey('gs', '#12View page source', function() {
+      RUNTIME("viewSource", { tab: { tabbed: true }});
+    });
+    mapkey(';di', '#1Download image', function() {
+      Hints.create('img', function(element) {
+        RUNTIME('download', {
+          url: element.src
         });
-        mapkey('ox', '#8Open recently closed URL', function() {
-            Front.openOmnibar({type: "RecentlyClosed"});
-        });
-        mapkey('X', '#3Restore closed tab', function() {
-            RUNTIME("openLast");
-        });
-        mapkey('b', '#8Open a bookmark', function() {
-            Front.openOmnibar(({type: "Bookmarks"}));
-        });
-        mapkey('ab', '#8Bookmark current page to selected folder', function() {
-            var page = {
-                url: window.location.href,
-                title: document.title
-            };
-            Front.openOmnibar(({type: "AddBookmark", extra: page}));
-        });
-        mapkey('oh', '#8Open URL from history', function() {
-            Front.openOmnibar({type: "History"});
-        });
-        mapkey('W', '#3Move current tab to another window',  function() {
-            Front.openOmnibar(({type: "Windows"}));
-        });
-        mapkey(';gt', '#3Gather filtered tabs into current window', function() {
-            Front.openOmnibar({type: "Tabs", extra: {
-                action: "gather"
-            }});
-        });
-        mapkey(';gw', '#3Gather all tabs into current window',  function() {
-            RUNTIME("gatherWindows");
-        });
-        mapkey('<<', '#3Move current tab to left', function() {
-            RUNTIME('moveTab', {
-                step: -1
-            });
-        });
-        mapkey('>>', '#3Move current tab to right', function() {
-            RUNTIME('moveTab', {
-                step: 1
-            });
-        });
-        mapkey('yd', "#7Copy current downloading URL", function() {
-            RUNTIME('getDownloads', {
-                query: {state: "in_progress"}
-            }, function(response) {
-                var items = response.downloads.map(function(o) {
-                    return o.url;
-                });
-                Clipboard.write(items.join(','));
-            });
-        });
-        mapkey('gs', '#12View page source', function() {
-            RUNTIME("viewSource", { tab: { tabbed: true }});
-        });
-        mapkey(';di', '#1Download image', function() {
-            Hints.create('img', function(element) {
-                RUNTIME('download', {
-                    url: element.src
-                });
-            });
-        });
-        mapkey(';j', '#12Close Downloads Shelf', function() {
-            RUNTIME("closeDownloadsShelf", {clearHistory: true});
-        });
-        mapkey(';dh', '#14Delete history older than 30 days', function() {
-            RUNTIME('deleteHistoryOlderThan', {
-                days: 30
-            });
-        });
-        mapkey(';yh', '#14Yank histories', function() {
-            RUNTIME('getHistory', {}, function(response) {
-                Clipboard.write(response.history.map(h => h.url).join("\n"));
-            });
-        });
-        mapkey(';ph', '#14Put histories from clipboard', function() {
-            Clipboard.read(function(response) {
-                RUNTIME('addHistories', {history: response.data.split("\n")});
-            });
-        });
-        mapkey(';db', '#14Remove bookmark for current page', function() {
-            RUNTIME('removeBookmark');
-        });
-    }
+      });
+    });
+    mapkey(';j', '#12Close Downloads Shelf', function() {
+      RUNTIME("closeDownloadsShelf", {clearHistory: true});
+    });
+    mapkey(';dh', '#14Delete history older than 30 days', function() {
+      RUNTIME('deleteHistoryOlderThan', {
+        days: 30
+      });
+    });
+    mapkey(';yh', '#14Yank histories', function() {
+      RUNTIME('getHistory', {}, function(response) {
+        Clipboard.write(response.history.map(h => h.url).join("\n"));
+      });
+    });
+    mapkey(';ph', '#14Put histories from clipboard', function() {
+      Clipboard.read(function(response) {
+        RUNTIME('addHistories', {history: response.data.split("\n")});
+      });
+    });
+    mapkey(';db', '#14Remove bookmark for current page', function() {
+      RUNTIME('removeBookmark');
+    });
+
 }

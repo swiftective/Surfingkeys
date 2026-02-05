@@ -624,7 +624,7 @@ Register an inline query.
 
 Get current browser name
 
-Returns **[string][106]** "Chrome" | "Firefox" | "Safari"
+Returns **[string][106]** "Chrome" | "Firefox"
 
 ## Front.showBanner
 

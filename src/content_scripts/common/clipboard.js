@@ -38,13 +38,6 @@ function createClipboard() {
      * });
      */
     self.read = function(onReady) {
-        if (getBrowserName().startsWith("Safari")) {
-            RUNTIME('readClipboard', null, function(response) {
-                onReady(response);
-            });
-            return;
-        }
-
         if (getBrowserName() === "Firefox" &&
             typeof navigator.clipboard === 'object' && typeof navigator.clipboard.readText === 'function') {
           navigator.clipboard.readText().then((data) => {
@@ -101,7 +94,7 @@ function createClipboard() {
                 cb();
             });
         } else {
-            // works for Firefox and Safari now.
+            // works for Firefox
             RUNTIME("writeClipboard", { text });
             cb();
         }

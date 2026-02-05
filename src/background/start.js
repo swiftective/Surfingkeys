@@ -1544,12 +1544,6 @@ function start(browser) {
     self.writeClipboard = function (message, sender, sendResponse) {
         navigator.clipboard.writeText(message.text)
     };
-    self.readClipboard = function (message, sender, sendResponse) {
-        // only for Safari
-        chrome.runtime.sendNativeMessage("application.id", {message: "Clipboard.read"}, function(response) {
-            _response(message, sendResponse, response);
-        });
-    };
 
     self.getContainerName = browser._getContainerName(self, _response);
 }

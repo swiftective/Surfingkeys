@@ -75,8 +75,6 @@ export default function(
 
     if (getBrowserName() === "Firefox") {
         document.querySelector("#localPathForSettings").style.display = "";
-    } else if (getBrowserName().startsWith("Safari")) {
-        document.querySelector("#localPathHelpForFile").remove();
     }
 
     var basicSettingsDiv = document.getElementById("basicSettings");

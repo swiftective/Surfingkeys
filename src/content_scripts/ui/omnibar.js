@@ -523,9 +523,6 @@ function createOmnibar(front, clipboard) {
         _savedAargs = args;
         ui.classList.remove("sk_omnibar_middle");
         ui.classList.remove("sk_omnibar_bottom");
-        if (getBrowserName() === "Safari-iOS") {
-            runtime.conf.omnibarPosition = "bottom";
-        }
         ui.classList.add("sk_omnibar_" + runtime.conf.omnibarPosition);
         if (runtime.conf.omnibarPosition === "bottom") {
             self.resultsDiv.remove();
