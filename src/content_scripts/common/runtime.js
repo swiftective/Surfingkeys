@@ -145,7 +145,6 @@ var runtime = (function() {
     self.postTopMessage = function(msg) {
         getTopURLPromise.then(function(topUrl) {
             if (window === top) {
-                // Firefox use "resource://pdf.js" as window.origin for pdf viewer
                 topUrl = window.location.origin;
             }
             if (topUrl === "null" || new URL(topUrl).origin === "file://") {

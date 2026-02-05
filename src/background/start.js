@@ -548,10 +548,9 @@ function start(browser) {
         });
     };
     self.getState = function(message, sender, sendResponse) {
-        loadSettings(['blocklist', 'noPdfViewer'], function(data) {
+        loadSettings(['blocklist'], function(data) {
             if (sender.tab) {
                 _response(message, sendResponse, {
-                    noPdfViewer: data.noPdfViewer,
                     state: _getState(data, new URL(getSenderUrl(sender)), message.blocklistPattern, message.lurkingPattern)
                 });
             }
