@@ -950,18 +950,6 @@ function createNormal(insert) {
         }
     });
 
-    function _onMouseUp(event) {
-        if (runtime.conf.mouseSelectToQuery.indexOf(window.origin) !== -1
-            && !isElementClickable(event.target)
-            && !event.target.matches(".cm-matchhighlight")) {
-            // perform inline query after 1 ms
-            // to avoid calling on selection collapse
-            setTimeout(() => {
-                dispatchSKEvent('querySelectedWord');
-            }, 1);
-        }
-    }
-
     var _disabled = null;
     self.disable = function() {
         if (!_disabled) {
@@ -969,7 +957,6 @@ function createNormal(insert) {
             _disabled.enter(0, true);
         }
         dispatchSKEvent('turnOffDOMObserver');
-        document.removeEventListener("mouseup", _onMouseUp);
     };
 
     self.enable = function() {
@@ -977,7 +964,6 @@ function createNormal(insert) {
             _disabled.exit();
             _disabled = null;
         }
-        document.addEventListener("mouseup", _onMouseUp);
     };
     self.enable();
 

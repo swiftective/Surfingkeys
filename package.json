@@ -24,7 +24,6 @@
   "homepage": "https://github.com/swiftective/Surfingkeys#readme",
   "devDependencies": {
     "@types/events": "^3.0.3",
-    "@types/offscreencanvas": "^2019.7.3",
     "typescript": "^4.9.5",
     "vite": "^7.3.1"
   },

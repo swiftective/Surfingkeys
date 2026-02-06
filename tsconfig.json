@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "types": ["node", "offscreencanvas"],
+    "types": ["node"],
     "allowJs": true,
     "strict": true,
     "moduleResolution": "node",

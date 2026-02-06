@@ -351,26 +351,7 @@ function createFront(insert, normal, hints, visual, browser) {
     var _inlineQuery;
     var _showQueryResult;
     self.performInlineQuery = function (query, pos, showQueryResult) {
-        if (document.dictEnabled !== undefined) {
-            if (document.dictEnabled) {
-                if (window.location.protocol === "dictorium:") {
-                    if (window === top) {
-                        window.location.href = query;
-                    } else {
-                        window.postMessage({dictorium_data: { type: 'DictoriumReload', word: query }});
-                    }
-                } else {
-                    window.postMessage({dictorium_data: {
-                        type: "OpenDictoriumQuery",
-                        word: query,
-                        sentence: "",
-                        pos: pos,
-                        source: window.location.href
-                    }});
-                }
-                hidePopup();
-            }
-        } else if (_inlineQuery) {
+        if (_inlineQuery) {
             query = query.toLocaleLowerCase();
             runtime.updateHistory('OmniQuery', query);
             httpRequest({
@@ -636,7 +617,7 @@ function createFront(insert, normal, hints, visual, browser) {
     });
 
     window.addEventListener('message', function (event) {
-        var _message = event.data && (event.data.surfingkeys_content_data || event.data.dictorium_data);
+        var _message = event.data && event.data.surfingkeys_content_data;
         if (_message === undefined) {
             return;
         }
@@ -671,13 +652,8 @@ function createFront(insert, normal, hints, visual, browser) {
             }
         } else if (_message.action === "activated") {
             _actions['activated'](_message);
-        } else if (_message.type === "DictoriumViewReady") {
-            // make inline query also work on dictorium frame continuously
-            _actions['activated'](_message);
         }
-        if (!event.data.dictorium_data) {
-            event.stopImmediatePropagation();
-        }
+        event.stopImmediatePropagation();
     }, true);
 
     var uiHostDetaching;

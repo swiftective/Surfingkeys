@@ -410,7 +410,6 @@ function createOmnibar(front, clipboard) {
         } else if(b.hasOwnProperty('width')) {
             type = "🔖";
             uid = "T" + b.windowId + ":" + b.id;
-        // } else if(b.type && /^\p{Emoji}$/u.test(b.type)) {
         } else if(b.type && b.type.length === 2 && b.type.charCodeAt(0) > 255) {
             type = b.type;
         }

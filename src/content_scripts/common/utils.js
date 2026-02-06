@@ -170,20 +170,6 @@ function isEditable(element) {
         || (element.localName === 'input' && /^(?!button|checkbox|file|hidden|image|radio|reset|submit)/i.test(element.type)));
 }
 
-function parseQueryString(query) {
-    var params = {};
-    if (query.length) {
-        var parts = query.split('&');
-        for (var i = 0, ii = parts.length; i < ii; ++i) {
-            var param = parts[i].split('=');
-            var key = param[0].toLowerCase();
-            var value = param.length > 1 ? param[1] : null;
-            params[decodeURIComponent(key)] = decodeURIComponent(value);
-        }
-    }
-    return params;
-}
-
 function reportIssue(title, description) {
     showPopup(`${title} ${description}`);
 }

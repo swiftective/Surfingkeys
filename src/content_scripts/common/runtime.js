@@ -48,7 +48,6 @@ var runtime = (function() {
             defaultSearchEngine: "g",
             editableBodyCare: true,
             enableAutoFocus: true,
-            enableEmojiInsertion: false,
             experiment: false,
             focusFirstCandidate: false,
             focusOnSaved: true,
@@ -74,7 +73,6 @@ var runtime = (function() {
             showModeStatus: false,
             smartPageBoundary: false,
             smoothScroll: true,
-            startToShowEmoji: 2,
             stealFocusOnLoad: true,
             tabsThreshold: 100,
             textAnchorPat: /(^[\n\r\s]*\S{3,}|\b\S{4,})/g,
@@ -82,7 +80,6 @@ var runtime = (function() {
             scrollFriction: 0,
             aceKeybindings: "vim",
             caretViewport: null,
-            mouseSelectToQuery: [],
         },
     }, _handlers = {};
 

@@ -589,7 +589,6 @@ const Front = (function() {
         }
     }
 
-    // for mouseSelectToQuery
     document.onmouseup = function(e) {
         if (!_bubble.contains(e.target)) {
             _bubble.style.display = "none";
@@ -985,7 +984,7 @@ function createAceEditor(normal, front) {
         };
         vim.defineEx("wq", "wq", wq);
         vim.defineEx("x", "x", wq);
-        vim.map('<CR>', ':wq', 'normal');
+        vim.map('<CR>', ':wq<CR>', 'normal');
         vim.defineEx("bnext", "bn", function(cm, input) {
             front.contentCommand({
                 action: 'nextEdit',
@@ -1073,17 +1072,17 @@ function createAceEditor(normal, front) {
                 vim.unmap('<CR>', 'insert');
                 vim.unmap('<C-CR>', 'insert');
                 if (message.type === 'url') {
-                    vim.map('<CR>', ':wq', 'insert');
+                    vim.map('<CR>', '<Esc>:wq', 'insert');
                     _ace.setOption('showLineNumbers', false);
                     _ace.language_tools.setCompleters([createUrlCompleter()]);
                     _ace.container.style.height = "30%";
                 } else if (message.type === 'input') {
-                    vim.map('<CR>', ':wq', 'insert');
+                    vim.map('<CR>', '<Esc>:wq', 'insert');
                     _ace.setOption('showLineNumbers', false);
                     _ace.language_tools.setCompleters([pageWordCompleter]);
                     _ace.container.style.height = "16px";
                 } else {
-                    vim.map('<C-CR>', ':wq', 'insert');
+                    vim.map('<C-CR>', '<Esc>:wq<CR>', 'insert');
                     _ace.setOption('showLineNumbers', true);
                     _ace.language_tools.setCompleters([pageWordCompleter]);
                     _ace.container.style.height = "30%";

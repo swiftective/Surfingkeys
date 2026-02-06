@@ -691,45 +691,18 @@ function createAPI(clipboard, insert, normal, hints, visual, front, browser) {
         });
     });
 
-    function getSentence(textNode, offset) {
-        var sentence = "";
-
-        actionWithSelectionPreserved(function(sel) {
-            sel.setPosition(textNode, offset);
-            sel.modify("extend", "backward", "sentence");
-            sel.collapseToStart();
-            sel.modify("extend", "forward", "sentence");
-
-            sentence = sel.toString();
-        });
-
-        return sentence.replace(/\n/g, '');
-    }
-
     mapkey("cq", '#7Query word with Hints', function() {
         hints.create(runtime.conf.textAnchorPat, function (element) {
             var word = element[2].trim().replace(/[^A-z].*$/, "");
             var b = getTextNodePos(element[0], element[1], element[2].length);
-            if (document.dictEnabled !== undefined) {
-                if (document.dictEnabled) {
-                    window.postMessage({dictorium_data: {
-                        type: "OpenDictoriumQuery",
-                        word: word,
-                        sentence: getSentence(element[0], element[1]),
-                        pos: b,
-                        source: window.location.href
-                    }});
-                }
-            } else {
-                front.performInlineQuery(word, {
-                    top: b.top,
-                    left: b.left,
-                    height: b.height,
-                    width: b.width
-                }, function (pos, queryResult) {
-                    dispatchSKEvent('showBubble', [pos, queryResult, false]);
-                });
-            }
+            front.performInlineQuery(word, {
+                top: b.top,
+                left: b.left,
+                height: b.height,
+                width: b.width
+            }, function (pos, queryResult) {
+                dispatchSKEvent('showBubble', [pos, queryResult, false]);
+            });
         });
     });
 
