@@ -166,9 +166,7 @@ try {
         manifest.background.persistent = false;
         manifest.incognito = "split";
         manifest.options_page = "pages/options.html";
-        if (mode === "development") {
-            manifest.key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAneIRqYRqG/0RoYzpWoyeeO8KxxvWZvIabABbeQyHQ2PFOf81j/O5J28HGAEQJ56AptKMTcTeG2qZga9B2u9k98OmRcGp8BDco6fh1vD6/x0fWfehPeub5IcEcQmCd1lBuVa8AtUqV3C+He5rS4g8dB8g8GRlSPPSiDSVNMv+iwKAk7TbM3TKz6DyFO8eCtWXr6wJCcYeJA+Mub7o8DKIHKgv8XH8+GbJGjeeIUBU7mlGlyS7ivdsG1V6D2/Ldx0O1e6sRn7f9jiC4Xy1N+zgZ7BshYbnlbwedomg1d5kuo5m4rS+8BgTchPPkhkvEs62MI4e+fmQd0oGgs7PtMSrTwIDAQAb";
-        }
+        manifest.key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA22tlKplcnTRtM7OYGZElrVBXETYCskz8UHDpa4A9WxDH5vn5slom0lH/j9ATc5D8jadJxZ3+W4c26NjUNSAvcQmNaoQg3C4Ht3U7tlGzU+FBEMdLJoV/KbUnH3zlc+ZChSHumuUMgIuIwsWipCD9Ji9kRKUKEAyt5YOJA43eCdeCJKLMWwltGKuvgNQ1hfs3zNzyxT15CSXPjD3vpNzylQRaxX2xgtFa2GE5qQdT+Eq5V7DDVFwYl/qepUKC6shzEWDOCr3Urv7C/4JyBzw0N3HaBx2vlvAjZUn/1bzUCD0rcxl3d96TXOhEhAYHeAHpQqxRIy9l/TfCpBbfCtG1QwIDAQAB";
     }
 
     fs.writeFileSync(path.resolve(distDir, 'manifest.json'), JSON.stringify(manifest, null, 2));
