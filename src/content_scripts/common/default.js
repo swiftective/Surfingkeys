@@ -6,7 +6,6 @@ export default function(api) {
         getFormData,
         map,
         mapkey,
-        readText,
         tabOpenLink,
         vmapkey,
         Clipboard,
@@ -58,12 +57,7 @@ export default function(api) {
     map('C', 'gf');
     mapkey('<Ctrl-h>', '#1Mouse over elements.', function() {
         Hints.create("", (element, event) => {
-            if (chrome.surfingkeys) {
-                const r = element.getClientRects()[0];
-                chrome.surfingkeys.sendMouseEvent(2, Math.round(r.x + r.width / 2), Math.round(r.y + r.height / 2), 0);
-            } else {
-                Hints.dispatchMouseClick(element, event);
-            }
+            Hints.dispatchMouseClick(element, event);
         }, {mouseEvents: ["mouseover"]});
     });
     mapkey('<Ctrl-j>', '#1Mouse out elements.', function() {
@@ -373,15 +367,6 @@ export default function(api) {
             tabOpenLink("about:blank");
         });
     } else if (browser === "Chrome") {
-        mapkey('gr', '#14Read selected text or text from clipboard', function() {
-            Clipboard.read(function(response) {
-                readText(window.getSelection().toString() || response.data, {verbose: true});
-            });
-        });
-        vmapkey('gr', '#9Read selected text', function() {
-            readText(window.getSelection().toString(), {verbose: true});
-        });
-
         mapkey('on', '#3Open newtab', function() {
             tabOpenLink("chrome://newtab/");
         });

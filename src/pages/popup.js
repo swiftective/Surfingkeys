@@ -1,12 +1,3 @@
-String.prototype.format = function() {
-    var formatted = this;
-    for (var i = 0; i < arguments.length; i++) {
-        var regexp = new RegExp('\\{' + i + '\\}', 'gi');
-        formatted = formatted.replace(regexp, arguments[i]);
-    }
-    return formatted;
-};
-
 var disableAll = document.getElementById('disableAll'),
     version = "Orbit " + chrome.runtime.getManifest().version;
 
@@ -36,8 +27,4 @@ disableAll.addEventListener('click', function() {
     }, function(response) {
         updateStatus(response.blocklist);
     });
-});
-
-document.getElementById('reportIssue').addEventListener('click', function () {
-    window.close();
 });

@@ -14,14 +14,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/swiftective/Surfingkeys.git"
+    "url": "git+https://github.com/swiftective/Orbit.git"
   },
   "author": "swiftective",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/swiftective/Surfingkeys/issues"
-  },
-  "homepage": "https://github.com/swiftective/Surfingkeys#readme",
+  "homepage": "https://github.com/swiftective/Orbit#readme",
   "devDependencies": {
     "@types/events": "^3.0.3",
     "typescript": "^4.9.5",

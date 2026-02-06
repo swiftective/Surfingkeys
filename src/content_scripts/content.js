@@ -16,7 +16,6 @@ import {
     getBrowserName,
     htmlEncode,
     initL10n,
-    reportIssue,
     setSanitizedContent,
     showBanner,
 } from './common/utils.js';
@@ -207,9 +206,7 @@ Mode.init(window === top ? undefined : ()=> {
 
 let _browser;
 function start(browser) {
-    _browser = browser || {
-        readText: () => {},
-    };
+    _browser = browser || {};
     if (window === top) {
         new Promise((r, j) => {
             if (window.location.href === chrome.extension.getURL("/pages/options.html")) {
@@ -222,7 +219,6 @@ function start(browser) {
                         getBrowserName,
                         htmlEncode,
                         initL10n,
-                        reportIssue,
                         setSanitizedContent,
                         showBanner);
                     r(_initModules());

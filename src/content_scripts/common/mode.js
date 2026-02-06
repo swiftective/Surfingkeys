@@ -1,7 +1,6 @@
 import {
     listElements,
     isInUIFrame,
-    reportIssue,
 } from './utils.js';
 import { RUNTIME, dispatchSKEvent, runtime } from './runtime.js';
 import KeyboardUtils from './keyboardUtils';
@@ -40,7 +39,7 @@ const Mode = function(name, statusLine) {
                 mode_stack = mode_stack.slice(pos);
             } else {
                 var modeList = mode_stack.map(function(u) { return u.name; }).join(',');
-                reportIssue("Mode {0} pushed into mode stack again.".format(this.name), "Modes in stack: {0}".format(modeList));
+                console.error("Mode {0} pushed into mode stack again.".format(this.name), "Modes in stack: {0}".format(modeList));
             }
             // stackTrace();
         }

@@ -67,10 +67,6 @@ function listElements(root, whatToShow, filter) {
     return elms;
 }
 
-function isElementVisible(elm) {
-    return elm.offsetHeight > 0 && elm.offsetWidth > 0;
-}
-
 function isElementClickable(e) {
     var cssSelector = "a, button, select, input, textarea, summary, *[onclick], *[contenteditable=true], *.jfk-button, *.goog-flat-menu-button, *[role=button], *[role=link], *[role=menuitem], *[role=option], *[role=switch], *[role=tab], *[role=checkbox], *[role=combobox], *[role=menuitemcheckbox], *[role=menuitemradio]";
     if (runtime.conf.clickableSelector.length) {
@@ -170,10 +166,6 @@ function isEditable(element) {
         || (element.localName === 'input' && /^(?!button|checkbox|file|hidden|image|radio|reset|submit)/i.test(element.type)));
 }
 
-function reportIssue(title, description) {
-    showPopup(`${title} ${description}`);
-}
-
 function scrollIntoViewIfNeeded(elm, ignoreSize) {
     if (elm.scrollIntoViewIfNeeded) {
         elm.scrollIntoViewIfNeeded();
@@ -248,10 +240,6 @@ function actionWithSelectionPreserved(cb) {
         selection.setPosition(pos[1], pos[2]);
         selection.extend(pos[3], pos[4]);
     }
-}
-
-function last(array) {
-    return array[array.length - 1];
 }
 
 function filterAncestors(elements) {
@@ -880,7 +868,6 @@ export {
     parseAnnotation,
     refreshHints,
     regexFromString,
-    reportIssue,
     scrollIntoViewIfNeeded,
     setSanitizedContent,
     showBanner,

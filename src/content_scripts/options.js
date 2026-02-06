@@ -6,7 +6,6 @@ export default function(
     getBrowserName,
     htmlEncode,
     initL10n,
-    reportIssue,
     setSanitizedContent,
     showBanner,
 ) {
@@ -334,7 +333,7 @@ export default function(
                         composed: event.composed,
                         key: event.key
                     }, null, 4);
-                    reportIssue(`Unrecognized key event: ${event.sk_keyName}`, keyStr);
+                    console.warn(`Unrecognized key event: ${event.sk_keyName}`, keyStr);
                 } else {
                     _key += KeyboardUtils.decodeKeystroke(event.sk_keyName);
                     showKey();

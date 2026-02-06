@@ -52,7 +52,7 @@ for (const [name, entryPath] of Object.entries(inputs)) {
                     output: {
                         format: name === 'pages/ace' ? 'es' : 'iife',
                         entryFileNames: '[name].js',
-                        name: 'SurfingKeys_' + name.replace(/[\/-]/g, '_'),
+                        name: 'Orbit_' + name.replace(/[\/-]/g, '_'),
                         extend: true,
                     },
                     onwarn(warning, warn) {

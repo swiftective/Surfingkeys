@@ -679,7 +679,6 @@ function createAPI(clipboard, insert, normal, hints, visual, front, browser) {
 
     vmapkey("q", '#9Translate word under cursor', function() {
         var w = getWordUnderCursor();
-        browser.readText(w);
         var b = visual.getCursorPixelPos();
         front.performInlineQuery(w, {
             top: b.top,
@@ -726,7 +725,6 @@ function createAPI(clipboard, insert, normal, hints, visual, front, browser) {
         iunmap,
         vunmap,
         mapkey,
-        readText: browser.readText,
         removeSearchAlias,
         searchSelectedWith,
         tabOpenLink,
